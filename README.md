@@ -2,7 +2,10 @@
 通过该火狐浏览器插件可以利用关键词查询视频更新状态
 
 ---
+中文 English
+
 ## 导向
+
 - 开发者 [本页面](https://github.com/c4rO-0/YouTube-Filter)
 - 用户指南 [维基页面](https://github.com/c4rO-0/YouTube-Filter/wiki) 
 - 用户反馈 [反馈页面](https://github.com/c4rO-0/YouTube-Filter/issues)
@@ -25,7 +28,7 @@ lib
 ├── jquery-ui.min.css
 └── jquery-ui.min.js
 ```
-   
+
 **包含文件** :
 ```
 lib
@@ -49,7 +52,7 @@ settings
 ├── optionsV6.css
 ├── optionsV6.html
 └── optionsV6.js
- ```
+```
 
 ### 后台运行(background)
 查询网址, 过滤等指令执行的地方.
@@ -63,7 +66,7 @@ lib
 ├── jquery-ui.min.css
 └── jquery-ui.min.js
 ```
-   
+
 **包含文件** :
 ``` background.js ```
 
