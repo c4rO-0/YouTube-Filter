@@ -1,13 +1,12 @@
 # Youtube Filter
-通过该火狐浏览器插件可以利用关键词查询视频更新状态
+[中文](https://github.com/c4rO-0/YouTube-Filter/blob/master/README.md) [English](https://github.com/c4rO-0/YouTube-Filter/blob/master/README_en.md)
 
----
-中文 English
+通过该火狐浏览器插件可以利用关键词查询视频更新状态
 
 ## 导向
 
 - 开发者 [本页面](https://github.com/c4rO-0/YouTube-Filter)
-- 用户指南 [维基页面](https://github.com/c4rO-0/YouTube-Filter/wiki) 
+- 用户指南 [维基页面](https://github.com/c4rO-0/YouTube-Filter/wiki/%E4%B8%BB%E9%A1%B5) 
 - 用户反馈 [反馈页面](https://github.com/c4rO-0/YouTube-Filter/issues)
 
 ## 源码安装
