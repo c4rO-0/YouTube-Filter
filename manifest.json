@@ -1,0 +1,57 @@
+{
+    "manifest_version": 2,
+    "name": "YouTube Filter",
+    "description": "YouTube subscribe extension, highlight interesting contents",
+    "version": "2017Dec17.alpha001",
+    "browser_action": {
+        "browser_style": true,
+        "default_icon": {
+            "16": "icons/c4r_16.png",
+            "32": "icons/c4r_32.png",
+            "64": "icons/c4r_64.png"
+        },
+        "default_title": "Youtube Filter",
+        "default_popup":"popup/popup.html"
+    },
+    "content_scripts": [
+        {
+            "run_at": "document_end",
+            "matches": [
+                "*://*.youtube.com/feed/subscription*"
+            ],
+            "js": [
+                "lib/jquery-3.2.1.min.js",
+                "lib/core.js",
+                "content_scripts/content.js"
+            ]
+        }
+    ],
+    "background": {
+        "scripts": [
+            "lib/jquery-3.2.1.min.js",
+            "lib/core.js",
+            "background.js"
+        ]
+    },
+    "icons": {
+        "48": "icons/c4r_48.png",
+        "96": "icons/c4r_96.png"
+    },
+    "options_ui": {
+        "page": "settings/optionsV6.html",
+        // "page": "lib/test.html",
+        "open_in_tab": true
+    },
+    "permissions": [
+        // "activeTab",
+        "notifications",
+        "*://*.youtube.com/*",
+        "<all_urls>",
+        "storage",
+        "tabs",
+        "webNavigation",
+        "downloads"
+    ],
+    // "content_security_policy": "script-src 'self' 'sha256-/nLaDjLjCQs9I0v3MGE2bIX/U6rHqCAVc4r/uI3I34o='; object-src 'self'",
+    "author": "c4r"
+}

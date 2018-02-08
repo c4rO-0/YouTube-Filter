@@ -1,0 +1,292 @@
+@charset "utf-8";
+.row .col {
+	display: inline-block;
+	position: relative;
+}
+.col.right ul li .legacy {
+	list-style-type: none;
+	background-color: rgba(157,197,206,0.58);
+	margin-top: 3px;
+	margin-right: 3px;
+	margin-bottom: 3px;
+	margin-left: 3px;
+	padding-top: 2px;
+	padding-right: 2px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-radius: 6px;
+	height: 1.4em;
+}
+ul li label .legacy {
+	width: 27em;
+	min-width: 27em;
+}
+.col >  ul {
+	border: 0 solid rgba(136,136,136,1.00);
+	margin-top: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	max-height: 100vh;
+	max-width: 100vw;
+	border-bottom-left-radius: 6px;
+	border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+	overflow-x: hidden;
+	display: inline-block;
+	position: relative;
+	height: 50vh;
+	width: 63vw;
+	overflow-y: hidden;
+}
+
+
+.col ul .liTop {
+	position: relative;
+	top: 0px;
+	width: 100%;
+	height: 2.5em;
+	display: flex;
+}
+ul .liTop #spAdd {
+	width: 100%;
+	display: flex;
+	position: relative;
+}
+ul .liTop #tfAdd {
+	background-color: rgba(228,228,228,1.00);
+	border: 0;
+	width: 100%;
+	border-top-left-radius: 5px;
+	position: relative;
+	padding-left: 7px;
+	font-size: large;
+	color: rgba(136,136,136,1.00);
+}
+ul .liTop #btAdd {
+	border: 0;
+	border-top-right-radius: 5px;
+	color: rgba(255,0,0,1.00);
+	font-family: 'Roboto', sans-serif;
+	font-size: large;
+	font-weight: bold;
+	position: relative;
+	-webkit-box-shadow: 0px 0px 2px rgba(136,136,136,1.00);
+	box-shadow: 0px 0px 2px rgba(136,136,136,1.00);
+	background-color: rgba(235,235,235,1.00);
+	padding-left: 12px;
+	padding-right: 12px;
+
+
+
+
+}
+
+
+
+.col ul #ulKeyword {
+	position: absolute;
+	top: 2.5em;
+	bottom: 2.5em;
+	background-color: rgba(241,241,241,1.00);
+	-webkit-box-shadow: inset 0px 0px 16px rgba(136,136,136,1.00);
+	box-shadow: inset 0px 0px 16px rgba(136,136,136,1.00);
+	display: inline-block;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	padding-bottom: 0px;
+	list-style-type: none;
+	right: 0px;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+ul #ulKeyword .liKeyword {
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	font-family: 'Roboto', sans-serif;
+
+}
+ul #ulKeyword .liKeyword:hover  {
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	font-family: 'Roboto', sans-serif;
+	background-color: rgba(230,230,230,1.00);
+
+}
+#ulKeyword .liKeyword .spKeyword {
+	display: flex;
+	justify-content: space-between;
+}
+.liKeyword .spKeyword .tfKeyword {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+
+}
+.liKeyword .spKeyword .labKeyword {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+	overflow: hidden;
+	/* [disabled]vertical-align: middle; */
+}
+
+.liKeyword .spKeyword .spRight {
+	display: flex;
+	position: relative;
+}
+.spKeyword .spRight .btDelete {
+	border: 0;
+	margin-left: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0px 0px 2px 1px rgba(136,136,136,1.00);
+	box-shadow: 0px 0px 2px 1px rgba(136,136,136,1.00);
+	background-color: rgba(235,235,235,1.00);
+}
+
+
+
+
+
+
+
+.col ul .liBottom {
+	background-color: rgba(136,136,136,1.00);
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 2.5em;
+}
+ul .liBottom #spImport {
+	display: flex;
+	height: 100%;
+	position: absolute;
+	right: 0px;
+	left: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+.liBottom #spImport .btGroup {
+	display: inline-block;
+	width: 25.1%;
+	color: rgba(255,0,0,1.00);
+	font-family: 'Roboto', sans-serif;
+	border: 0;
+	font-weight: bold;
+	-webkit-box-shadow: 0px 0px 2px 0px rgba(136,136,136,1.00);
+	box-shadow: 0px 0px 2px 0px rgba(136,136,136,1.00);
+	background-color: rgba(235,235,235,1.00);
+}
+#dialog {
+	position: relative;
+	text-align: center;
+}
+
+#dialog .ulDialog {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#dialog ul .liDialog {
+	position: relative;
+
+}
+#dialog ul .liDialog:hover  {
+	position: relative;
+	background-color: rgba(235,235,235,1.00);
+
+}
+ul .liDialog .spDialog {
+	display: flex;
+	justify-content: space-between;
+}
+.liDialog .spDialog .labDialog {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.liDialog .spDialog .spDialogRight {
+	position: relative;
+	right: 0px;
+}
+
+.spDialog span .ckDialog {
+
+}
+#dlHelp .help {
+	text-indent: 2pc;
+}
+
+
+
+
+
+
+
+
+
+#test   {
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+	background-color: #ccc;
+}
+
+
+
+
+
+
+
+ul li img {
+	width: 1em;
+	height: 1em;
+	margin-right: 5px;
+	position: relative;
+	top: 3px;
+	left: 4px;
+}
+
+ul li input.png  {
+	width: 1.3em;
+	height: 1.3em;
+	margin-right: 5px;
+	position: relative;
+	top: 3px;
+	left: 4px;
+	float: right;
+	clear: both;
+}
+.asPl .png  {
+	width: 1em;
+	height: 1em;
+	margin-right: 5px;
+	position: relative;
+	top: 3px;
+	left: 4px;
+}
+
+ul li .asPl {
+	display: inline;
+	float: right;
+	margin-right: 7px;
+}
+ul li .txtKeyword {
+	width: 51em;
+}
+#add .addKeyword  {
+	width: 64em;
+	margin-left: 25px;
+}

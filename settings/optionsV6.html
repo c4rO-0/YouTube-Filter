@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Settings of Youtube Filter</title>
+	<link href="optionsV6.css" rel="stylesheet" type="text/css">
+	<link href="../lib/jquery-ui.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<script src="../lib/jquery-3.2.1.min.js"></script>
+	<script src="../lib/jquery-ui.min.js"></script>
+	<script src="../lib/core.js"></script>
+	<script src="optionsV6.js"></script>
+</head>
+
+<body>
+	<div class="row">
+		<div class="col">
+			<ul>
+				<li class="liTop">
+					<span id="spAdd">
+						<input name="textfield" type="text" id="tfAdd" placeholder="input keyword here">
+						<input name="button" type="button" id="btAdd" value="Add">
+					</span>
+				</li>
+				<ul id="ulKeyword">
+					<!-- <li class="liKeyword" style="display:none">
+						<span class="spKeyword">
+							<input name="textfield" type="text" class="tfKeyword" style="display:none" value="爸爸去哪儿5完整版ENG SUB湖南卫视芒果TV官方频道 China HunanTV Official Channel">
+							<label for="textfield2" class="labKeyword" title="爸爸去哪儿5,完整版,ENG SUB; 湖南卫视芒果TV官方频道 China HunanTV Official Channel">不要双击,请勿双击;讲真的别点aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
+							<span class="spRight">
+								<input type="checkbox" class="ckPlaylist">
+								<label>Playlist</label>
+								<input type="checkbox" class="ckOnoff">
+								<label>On/Off</label>
+								<input type="button" class="btDelete" value="Delete">
+							</span>
+						</span>
+					</li> -->
+				</ul>
+
+				<li class="liBottom">
+					<span id="spImport">
+						<input type="button" class="btGroup" id="Help" value="Help">
+						<input type="button" class="btGroup" id="ImportPlaylist" value="Import Playlist">
+						<input type="button" class="btGroup" id="Import" value="Import Settings">
+						<input type="button" class="btGroup" id="Export" value="Export Settings">
+						<input type="file" id="flImport" style="display:none" accept=".json">
+					</span>
+				</li>
+			</ul>
+			<div id="test" style="display:none">Content for New div Tag Goes Here</div>
+		</div>
+	</div>
+	<div class="row" id="dialog">
+		<svg width="100px" height="100px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"
+		 class="lds-rolling" style="background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%;">
+			<circle cx="50" cy="50" fill="none" ng-attr-stroke="{{config.color}}" ng-attr-stroke-width="{{config.width}}" ng-attr-r="{{config.radius}}"
+			 ng-attr-stroke-dasharray="{{config.dasharray}}" stroke="#cdcdcd" stroke-width="12" r="40" stroke-dasharray="188.49555921538757 64.83185307179586">
+				<animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s"
+				 begin="0s" repeatCount="indefinite"></animateTransform>
+			</circle>
+		</svg>
+		<ul class="ulDialog">
+			<!-- <li class="liDialog">
+				<span class="spDialog">
+					<label class="labDialog">爸爸去哪儿5;完整版;ENG SUB", "湖南卫视芒果TV官方频道 China HunanTV Official Channel</label>
+					<span class="spDialogRight">
+						<input name="checkbox" type="checkbox" class="ckDialog">
+					</span>
+				</span>
+			</li> -->
+		</ul>
+		<button id="DialogOK">OK</button>
+	</div>
+	<div class="row" id="dlHelp">
+		<h3>Keyword example:</h3>
+		<p class="help">
+			keyword1<b>,</b> keyword2<b>,</b> keyword3<b>;</b> channel name
+		</p>
+		<h4>Rules:</h4>
+		<ul>
+			<li>Search results will match all keywords</li>
+			<li>Every entry should have at least one keyword</li>
+			<li>Every entry should have channle name, except it is a playlist</li>
+			<li>Separate multiple keywords with comma(<b>,</b>)</li>
+			<li>Separate keywords and channel name with colon(<b>;</b>)</li>
+			<li>Prefix comma and colon (<b>,;</b>) with backslash(<b>\</b>), if your keywords contain them i.e. key<b>\,</b>word1 NOT key<b>,</b>word1.</li>
+		</ul>
+		<h5>Tips</h5>
+		<ul>
+			<li>Double click on keywords can toggle editing</li>
+			<li>Drag to sort</li>
+			<li>Invalid channel name will turn off that entry, so check your spell and turn it on manually</li>
+			<li>In order to Import your Playlist, please stay logged in YouTube</li>
+			<li>For performance considerations, up to 10 entries are allowed, the excesses will be turned off</li>
+		</ul>
+	</div>
+
+</body>
+
+</html>
