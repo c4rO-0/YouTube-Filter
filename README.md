@@ -3,7 +3,7 @@
 
 通过该火狐浏览器插件可以利用关键词查询视频更新状态
 
-![gif test](add_sort_delete.gif)
+![gif test](https://media.giphy.com/media/xThtavflS2MvBodiiA/giphy.gif)
 ## 导向
 
 - 开发者 [本页面](https://github.com/c4rO-0/YouTube-Filter)
