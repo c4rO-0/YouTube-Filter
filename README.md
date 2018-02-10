@@ -17,104 +17,15 @@
 
 ## 插件介绍
 本插件使用javascript开发. 总共分为5部分.
-### 内核(core)
-各部分需要共用的函数, 以及类的构造.
-包含 : 关键字类(keyWord), 视频信息类(infoVideo), 索取网页函数(asynHttpRequest)等.
 
-**依赖文件** :
-```
-lib
-├── jquery-3.2.1.min.js
-├── jquery-ui.min.css
-└── jquery-ui.min.js
-```
+**内核(core)** : 储存公用函数.
 
-**包含文件** :
-```
-lib
-├── core.js
-```
+**设置页面(settings)** : 设置页面的脚本和html.
 
-### 设置页面(settings)
-设置页面的脚本和html.
+**后台运行(background)** : 查询网址, 过滤等指令执行的地方.
 
-**依赖文件** :
-```
-lib
-├── core.js
-├── jquery-3.2.1.min.js
-├── jquery-ui.min.css
-└── jquery-ui.min.js
-```
-**包含文件** :
-```
-settings
-├── optionsV6.css
-├── optionsV6.html
-└── optionsV6.js
-```
+**content** : 在youtube订阅页面执行的脚本.
 
-### 后台运行(background)
-查询网址, 过滤等指令执行的地方.
-
-**依赖文件** :
-
-```
-lib
-├── core.js
-├── jquery-3.2.1.min.js
-├── jquery-ui.min.css
-└── jquery-ui.min.js
-```
-
-**包含文件** :
-``` background.js ```
-
-### content
-在youtube订阅页面执行的脚本.
-
-**依赖文件** :
-```
-├── background.js
-├── lib
-│   ├── core.js
-│   ├── jquery-3.2.1.min.js
-│   ├── jquery-ui.min.css
-│   └── jquery-ui.min.js
-```
-
-**包含文件** :
-```
-content_scripts
-└── content.js
-```
-
-### 图标弹窗
-不知道叫什么
-
-**依赖文件** :
-```
-├── background.js
-├── icons
-│   ├── c4r_16.png
-│   ├── c4r_32.png
-│   ├── c4r_48.png
-│   ├── c4r_64.png
-│   └── c4r_96.png
-├── lib
-│   ├── core.js
-│   ├── jquery-3.2.1.min.js
-│   ├── jquery-ui.min.css
-│   └── jquery-ui.min.js
-```
-
-
-**包含文件** :
-```
-popup
-├── popup.css
-├── popup.html
-└── popup.js
-```
+**图标弹窗(popup)** : 
 
 
