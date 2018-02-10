@@ -729,7 +729,7 @@ function updateSearchListIterator(timeGap) {
 }
 
 initialAllUrl()
-let timeGap = 5 * 60 * 1000; // 5 min
+let timeGap = 60 * 60 * 1000; // 60 min
 setTimeout(() => {
 	// console.log("First Search List");
 	updateSearchListIterator(timeGap);

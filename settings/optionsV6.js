@@ -225,8 +225,8 @@ function htmlSnippet(shortOutput, longOutput) {
 
 //subtle save version done except handler for checkbox
 function handleAdd() {
+    if ($("#tfAdd").prop("value") == "") { return }
     console.log("adding keyword...")
-
     let [keyword, channel] = parseInputLine($("#tfAdd").prop("value"))
     $("#tfAdd").prop("value", "")
     let longOutput = reverseParseKeyword(keyword, channel)

@@ -13,19 +13,19 @@
         "default_title": "Youtube Filter",
         "default_popup":"popup/popup.html"
     },
-    "content_scripts": [
-        {
-            "run_at": "document_end",
-            "matches": [
-                "*://*.youtube.com/feed/subscription*"
-            ],
-            "js": [
-                "lib/jquery-3.2.1.min.js",
-                "lib/core.js",
-                "content_scripts/content.js"
-            ]
-        }
-    ],
+    // "content_scripts": [
+    //     {
+    //         "run_at": "document_end",
+    //         "matches": [
+    //             "*://*.youtube.com/feed/subscription*"
+    //         ],
+    //         "js": [
+    //             "lib/jquery-3.2.1.min.js",
+    //             "lib/core.js",
+    //             "content_scripts/content.js"
+    //         ]
+    //     }
+    // ],
     "background": {
         "scripts": [
             "lib/jquery-3.2.1.min.js",
