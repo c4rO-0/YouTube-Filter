@@ -775,12 +775,35 @@ function updateSearchList(list_KeyWord) {
 	console.log("start update search list");
 	browser.runtime.sendMessage({ debugOutput: "updating..." })
 	let list_vedio = new Array();
-	searchListOnline(list_KeyWord).then((list_SearchResults) => {
+	let list_KeyWord_local = new Array();
+	for (let i = 0; i < list_KeyWord.length; i++){
+		if(list_KeyWord[i].channel != "" && list_KeyWord[i].channelUrl != ""){
+			if(list_KeyWord[i].playList != "" && list_KeyWord[i].playListUrl!= ""){
+				list_KeyWord_local.push(list_KeyWord[i]);
+			}else if(list_KeyWord[i].playList == ""){
+				if(list_KeyWord[i].self.join() != ""){
+					list_KeyWord_local.push(list_KeyWord[i]);
+				}
+				
+			}
+		}else if(list_KeyWord[i].channel == ""){
+			if(list_KeyWord[i].playList != "" ){
+				//playlist一定会有channel
+			}else if(list_KeyWord[i].playList == ""){
+				if(list_KeyWord[i].self.join() != ""){
+					list_KeyWord_local.push(list_KeyWord[i]);
+				}
+			}
+		}
+
+	}
+
+	searchListOnline(list_KeyWord_local).then((list_SearchResults) => {
 		//console.log("final:");
 		//console.log(list_SearchResults)
 		//console.log(list_SearchResults.length);
 
-		list_vedio.push.apply(list_vedio, filterSearch(list_KeyWord, list_SearchResults));
+		list_vedio.push.apply(list_vedio, filterSearch(list_KeyWord_local, list_SearchResults));
 		//console.log("num video : ", list_vedio.length);
 		// debug
 		// for (let i = 0; i < list_vedio.length; i++) {
@@ -788,7 +811,7 @@ function updateSearchList(list_KeyWord) {
 		// 	list_vedio[i].show();
 		// }
 
-		return searchPlayListOnline(list_KeyWord);
+		return searchPlayListOnline(list_KeyWord_local);
 	}).then((list_Playlistmainpage) => {
 		//console.log("final:");
 		console.log("num video : ", list_vedio.length);
@@ -796,10 +819,10 @@ function updateSearchList(list_KeyWord) {
 		browser.runtime.sendMessage({ debugOutput: "got " + list_vedio.length + " video(s)" })
 
 		// 或得playList更新时间
-		for (let i = 0; i < list_KeyWord.length; i++) {
-			if (list_KeyWord[i].playList != "") {
+		for (let i = 0; i < list_KeyWord_local.length; i++) {
+			if (list_KeyWord_local[i].playList != "") {
 				for (let j = 0; j < list_vedio.length; j++) {
-					if (list_KeyWord[i].channel == list_vedio[j].channelName && list_KeyWord[i].playList == list_vedio[j].title) {
+					if (list_KeyWord_local[i].channel == list_vedio[j].channelName && list_KeyWord[i].playList == list_vedio[j].title) {
 						updatePlayListInfo(list_vedio[j], list_Playlistmainpage[i]);
 					}
 				}
@@ -830,7 +853,7 @@ function updateSearchList(list_KeyWord) {
 	// 			{ greeting: "Hey boy, from background" }
 	// 		)
 	// 	}
-	// }).catch((error) => { console.log(`Error:${error}`) })
+	// }).catch((error) => { console.log(`Error:${error}`) })k
 }
 
 function updateActivatedList() {
@@ -1090,7 +1113,6 @@ browser.runtime.onMessage.addListener((ms) => {
 		browser.storage.local.get("list_KeyWord").then((o) => {
 			// updateSearchList(o.list_KeyWord)
 			updateActivatedList()
-
 
 		})
 	}
