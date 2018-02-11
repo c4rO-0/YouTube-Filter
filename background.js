@@ -538,9 +538,9 @@ function initialUrl(key_word) {
 		console.log("----查找URL------");
 		//key_word_local.show();
 		//console.log(key_world.playList)
-
+		let vedio = new Array();
 		if (key_word.channel != "") {
-			let vedio = new Array();
+			
 			key_word_local.self = [""];
 			key_word_local.playList = "";
 			searchListOnline([key_word_local]).then((list_SearchResults) => {
@@ -594,8 +594,9 @@ function initialUrl(key_word) {
 								key_word_local.channel = key_word.channel
 								key_word_local.channelUrl = key_word.channelUrl
 								console.log("找到Channel");
-								// console.log(vedio[0].channelName)
 								// console.log(key_word.channel)
+								// console.log(key_word.channelUrl)
+
 								// key_word.show();
 							}
 							console.log("-------------->");
@@ -682,6 +683,8 @@ function initialUrl(key_word) {
 
 					});
 
+				}else{
+					resolve(key_word)
 				}
 			})
 
@@ -776,12 +779,14 @@ function updateSearchList(list_KeyWord) {
 	browser.runtime.sendMessage({ debugOutput: "updating..." })
 	let list_vedio = new Array();
 	let list_KeyWord_local = new Array();
+	
 	for (let i = 0; i < list_KeyWord.length; i++){
+
 		if(list_KeyWord[i].channel != "" && list_KeyWord[i].channelUrl != ""){
 			if(list_KeyWord[i].playList != "" && list_KeyWord[i].playListUrl!= ""){
 				list_KeyWord_local.push(list_KeyWord[i]);
 			}else if(list_KeyWord[i].playList == ""){
-				if(list_KeyWord[i].self.join() != ""){
+				if(list_KeyWord[i].self.join('') != ""){
 					list_KeyWord_local.push(list_KeyWord[i]);
 				}
 				
@@ -790,14 +795,14 @@ function updateSearchList(list_KeyWord) {
 			if(list_KeyWord[i].playList != "" ){
 				//playlist一定会有channel
 			}else if(list_KeyWord[i].playList == ""){
-				if(list_KeyWord[i].self.join() != ""){
+				if(list_KeyWord[i].self.join('') != ""){
 					list_KeyWord_local.push(list_KeyWord[i]);
 				}
 			}
 		}
 
 	}
-
+	// console.log("update debug : " + list_KeyWord_local.length)
 	searchListOnline(list_KeyWord_local).then((list_SearchResults) => {
 		//console.log("final:");
 		//console.log(list_SearchResults)
@@ -945,6 +950,7 @@ function initialAllUrl() {
 			}
 			Promise.all(listPromise).then((list) => {
 				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		}
 	})
@@ -1081,6 +1087,7 @@ browser.runtime.onMessage.addListener((ms) => {
 			initialUrl(o.list_KeyWord[ms.idxToBeInit]).then((initializedKeyword) => {
 				o.list_KeyWord[ms.idxToBeInit] = initializedKeyword
 				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.topFewToBeInit !== undefined) {
@@ -1094,6 +1101,7 @@ browser.runtime.onMessage.addListener((ms) => {
 			}
 			Promise.all(promiseArray).then((list) => {
 				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.bottomFewToBeInit !== undefined) {
@@ -1105,7 +1113,9 @@ browser.runtime.onMessage.addListener((ms) => {
 				}
 			}
 			Promise.all(promiseArray).then((list) => {
+
 				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.updateAll == true) {
