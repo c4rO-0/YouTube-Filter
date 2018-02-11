@@ -75,7 +75,7 @@ function searchListOnline(list) {
 			}
 		} else if (list[i].playList != "") {
 			// 对list进行查询
-			//console.log("debug : list");
+			console.log("debug : list");
 
 			if (list[i].channel != "") {
 				if (list[i].channelUrl != "") {
@@ -84,7 +84,7 @@ function searchListOnline(list) {
 					list_p[i] = asynHttpRequestDelay("GET", url);
 				} else {
 					// 需要更新channel信息
-					//console.log("need update channel info 1");
+					console.log("need update channel info 1");
 					list_p[i] = "";
 				}
 			} else {
@@ -241,18 +241,27 @@ function getPlayListInfo(il_video) {
 
 	titleObj = $(il_video).find("a.yt-uix-tile-link.yt-ui-ellipsis.yt-ui-ellipsis-2.yt-uix-sessionlink.spf-link");
 	var title = $(titleObj).text();
+	// var videoUrl = $(titleObj).attr("href");
 
 	//获取时长,和封面
-	coverObj = $(il_video).find("a.yt-uix-sessionlink.spf-link").find("div.yt-thumb.video-thumb").find("span.yt-thumb-simple");
+	// coverObj = $(il_video).find("a.yt-uix-sessionlink.spf-link").find("div.yt-thumb.video-thumb").find("span.yt-thumb-simple");
 
-	var coverUrl_onload = $(coverObj).find("img").attr("data-thumb");
+	// var coverUrl_onload = $(coverObj).find("img").attr("data-thumb");
+	// if (coverUrl_onload === undefined) {
+	// 	var coverUrl = $(coverObj).find("img").attr("src");
+	// } else {
+	// 	var coverUrl = coverUrl_onload;
+	// }
+	var coverUrl_onload = $(il_video).find("img").attr("data-thumb");
 	if (coverUrl_onload === undefined) {
-		var coverUrl = $(coverObj).find("img").attr("src");
+		var coverUrl = $(il_video).find("img").attr("src");
 	} else {
 		var coverUrl = coverUrl_onload;
 	}
 
-	var videoTime = $(coverObj).find("span").text();
+	// console.log("cover url : ", coverUrl)
+
+	var videoTime = $(il_video).find("span.video-time").text();
 
 	// 获取频道信息
 	channelObj = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-byline").find("a.yt-uix-sessionlink.spf-link");
@@ -260,12 +269,35 @@ function getPlayListInfo(il_video) {
 	var channelUrl = $(channelObj).attr("href");
 
 	// 获取更新时间
-	listUrlObj = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-meta").find("ul.yt-lockup-meta-info");
-	//timeObj = $(il_video).find("ul.yt-lockup-meta-info");
-	//uptimeli = $(timeObj).find("li").toArray()[0];
-	//uptimeStr = $(uptimeli).text();
-	uptimeStr = '' // 更新时间无法在搜索页面拿到,要在主页拿到; 在updatePlayListInfo函数中
-	var videoUrl = $(listUrlObj).find("li").children().attr("href");
+	timeObj = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-meta").find("ul.yt-lockup-meta-info");
+	var tNow = new Date();
+	let updateTime
+	if ($(timeObj).find("li").toArray().length == 2) {
+		uptimeli = $(timeObj).find("li").toArray()[0];
+		updateTime = $(uptimeli).text()
+		uptimeStr = convertReTime2Int($(uptimeli).text()) + tNow.valueOf();
+	} else {
+		// 可能在直播
+		if ($(il_video).find("div.yt-lockup-content").find("div.yt-lockup-badges").find("ul.yt-badge-list").find("span.yt-badge.yt-badge-live").length > 0) {
+			// 在直播
+			uptimeStr = tNow.valueOf();
+		} else {
+			// 不知道类别
+			uptimeStr = tNow.valueOf();
+		}
+	}
+
+
+	listUrlObj = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-meta").find("a.yt-uix-sessionlink.spf-link");
+
+	if(isObjEmpty(listUrlObj)){
+		//在主站查询
+		var videoUrl = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-meta") 
+						.find("ul.yt-lockup-meta-info").find("li").children().attr("href");
+	}else{
+		var videoUrl = $(listUrlObj).attr("href");
+	}
+	
 
 	vInfo = new infoVideo($(il_video).html(), title, videoUrl, coverUrl, videoTime, channelName, channelUrl, uptimeStr, new Date());
 
@@ -519,6 +551,7 @@ function initialUrl(key_word) {
 					//console.log("initial num video : ", vedio.length);
 					// debug
 					if (key_word.channel != "" && key_word.channelUrl != "") {
+						key_word_local.channelUrl = key_word.channelUrl
 						console.log("channel url 已存在");
 						console.log("-------------->");
 						reso(0)
@@ -545,6 +578,9 @@ function initialUrl(key_word) {
 
 								key_word.channel = vedio[0].channelName;
 								key_word.channelUrl = vedio[0].channelUrl;
+
+								key_word_local.channel = key_word.channel
+								key_word_local.channelUrl = key_word.channelUrl
 								console.log("找到Channel");
 								// console.log(vedio[0].channelName)
 								// console.log(key_word.channel)
@@ -570,6 +606,7 @@ function initialUrl(key_word) {
 				if (key_word.playList != "") {
 					vedio = [];
 					key_word_local.playList = key_word.playList;
+
 					searchListOnline([key_word_local]).then((list_SearchResults) => {
 
 						if (key_word.playList != "" && key_word.playListUrl == "") {
@@ -640,7 +677,76 @@ function initialUrl(key_word) {
 			// 不需要查找url
 			console.log("不需要初始化url");
 			resolve(key_word)
+		}else if (key_word.playList != "") {
+			vedio = [];
+			key_word_local.playList = key_word.playList;
+
+			searchListOnline([key_word_local]).then((list_SearchResults) => {
+
+				if (key_word.playList != "" && key_word.playListUrl == "") {
+					//key_word.show();
+					console.log("查找play list");
+					////key_word.show();
+					vedio.push.apply(vedio, filterPlayListSearch([key_word_local], list_SearchResults));
+				}
+
+				if (key_word.playList != "" && key_word.playListUrl != "") {
+					console.log("playlist url 已存在");
+					console.log("-------------->");
+
+					resolve(key_word)
+
+
+				} else {
+
+					if (vedio.length > 0) {
+						// 我们只用查找出来第一个的
+						//vedio[0].show();
+						if (key_word.playList != "" && key_word.playListUrl == "") {
+							//需要查找playlist的URL
+
+							//key_word_local.show();
+							// key_word.channel = vedio[0].channelName;
+							// key_word.channelUrl = vedio[0].channelUrl;
+							key_word.playListUrl = vedio[0].videoUrl;
+							key_word.playList = vedio[0].title;
+							console.log("找到play list");
+							// console.log(key_word.);		
+						}
+						// if (key_word.channel != "" && key_word.channelUrl == "") {
+
+						// 	key_word.channel = vedio[0].channelName;
+						// 	key_word.channelUrl = vedio[0].channelUrl;
+						// 	console.log("找到Channel");
+						// 	// console.log(vedio[0].channelName)
+						// 	// console.log(key_word.channel)
+						// 	// key_word.show();
+						// }
+						console.log("-------------->");
+
+						resolve(key_word)
+
+					} else {
+						//没有查找到list
+						console.log("没有找到Url");
+						key_word.onOff = false
+						resolve(key_word)
+						reject("error when initializing " + key_word.self)
+					}
+				}
+			}).catch((error) => {
+				// 未知错误
+				console.log(error)
+				browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+				key_word.onOff = false
+				resolve(key_word)
+				reject("error when initializing " + key_word.self)
+
+			});
+
 		} else {
+
+			
 			// 空keyword
 			console.log("empty Playlist or channel name")
 			key_word.onOff = false
