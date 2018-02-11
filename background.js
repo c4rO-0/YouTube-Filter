@@ -521,7 +521,7 @@ function initialUrl(key_word) {
 					console.log("channel url 已存在");
 					console.log("-------------->");
 
-					return new Promise(resolve(key_word));
+					return new Promise(()=>{});
 					
 									
 				}else {
@@ -552,13 +552,13 @@ function initialUrl(key_word) {
 						console.log("-------------->");
 
 						console.log("return")
-						return new Promise(resolve(key_word));
+						return new Promise(()=>{});
 
 					} else {
 						//没有查找到list
 						console.log("没有找到Url");
 						key_word.onOff = false
-						return new Promise(resolve(key_word));
+						return new Promise(()=>{});
 						// reject("error when initializing " + key_word.self)
 					}
 				}
