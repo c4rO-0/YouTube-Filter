@@ -241,6 +241,7 @@ function getPlayListInfo(il_video) {
 
 	titleObj = $(il_video).find("a.yt-uix-tile-link.yt-ui-ellipsis.yt-ui-ellipsis-2.yt-uix-sessionlink.spf-link");
 	var title = $(titleObj).text();
+	// console.log(title)
 	// var videoUrl = $(titleObj).attr("href");
 
 	//获取时长,和封面
@@ -290,13 +291,9 @@ function getPlayListInfo(il_video) {
 
 	listUrlObj = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-meta").find("a.yt-uix-sessionlink.spf-link");
 
-	if(isObjEmpty(listUrlObj)){
-		//在主站查询
-		var videoUrl = $(il_video).find("div.yt-lockup-content").find("div.yt-lockup-meta") 
-						.find("ul.yt-lockup-meta-info").find("li").children().attr("href");
-	}else{
-		var videoUrl = $(listUrlObj).attr("href");
-	}
+	var videoUrl = $(listUrlObj).attr("href");
+
+
 	
 
 	vInfo = new infoVideo($(il_video).html(), title, videoUrl, coverUrl, videoTime, channelName, channelUrl, uptimeStr, new Date());
@@ -497,6 +494,7 @@ function filterPlayListSearch(list_Keyword, list_SearchResults) {
 					if (satisfyKeyWord(list_Keyword[i], vInfo)) {
 						// vInfo.show();
 						list_vInfo.push(vInfo);
+						// console.log(vInfo.videoUrl)
 					} else {
 						// console.log("not satisfied keyword.");
 					}
@@ -507,9 +505,23 @@ function filterPlayListSearch(list_Keyword, list_SearchResults) {
 
 			if (list_vInfo.length == 0) {
 				//强行用第一个作为list
+
 				console.log("smart choose")
-				vInfo = getPlayListInfo(doc.find('[id*=item-section-]').children()[0]);
-				list_vInfo.push(vInfo);
+				if (list_Keyword[i].channel == '') {
+					vInfo = getPlayListInfo(doc.find('[id*=item-section-]').children()[0]);
+					list_vInfo.push(vInfo);
+				}else{
+					doc.find('li.feed-item-container.yt-section-hover-container.browse-list-item-container.branded-page-box').each(function (index) {
+						if(list_vInfo.length < 1){
+
+							vInfo = getPlayListInfo(this);
+							if(vInfo.videoUrl.includes("/playlist?list="))
+							list_vInfo.push(vInfo);
+
+						}
+					})
+
+				}
 			}
 		}
 
