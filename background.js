@@ -718,8 +718,8 @@ function initialUrl(key_word) {
 							//需要查找playlist的URL
 
 							//key_word_local.show();
-							// key_word.channel = vedio[0].channelName;
-							// key_word.channelUrl = vedio[0].channelUrl;
+							key_word.channel = vedio[0].channelName;
+							key_word.channelUrl = vedio[0].channelUrl;
 							key_word.playListUrl = vedio[0].videoUrl;
 							key_word.playList = vedio[0].title;
 							console.log("找到play list");
