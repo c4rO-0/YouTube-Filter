@@ -76,10 +76,22 @@ function searchListOnline(list) {
 		} else if (list[i].playList != "") {
 			// 对list进行查询
 			//console.log("debug : list");
-			url = "https://www.youtube.com/results?sp=EgIQAw%253D%253D&search_query=" + removeNChar(list[i].playList);
-			console.log(i + "th " + url);
-			list_p[i] = asynHttpRequestDelay("GET", url);
 
+			if (list[i].channel != "") {
+				if (list[i].channelUrl != "") {
+					url = "https://www.youtube.com/" + list[i].channelUrl + "/search?sp=CAISAhAB&query=" + removeNChar(list[i].playList);
+					console.log(i + "th " + url);
+					list_p[i] = asynHttpRequestDelay("GET", url);
+				} else {
+					// 需要更新channel信息
+					//console.log("need update channel info 1");
+					list_p[i] = "";
+				}
+			} else {
+				url = "https://www.youtube.com/results?sp=EgIQAw%253D%253D&search_query=" + removeNChar(list[i].playList);
+				console.log(i + "th " + url);
+				list_p[i] = asynHttpRequestDelay("GET", url);					
+			}
 
 		} else {
 			// 只含有channel信息
@@ -428,20 +440,38 @@ function filterPlayListSearch(list_Keyword, list_SearchResults) {
 			}
 		} else {
 			// playlist不为空
-			doc.find('[id*=item-section-]').children().each(function (index) {
-				// console.log("Pl : " + index + '------------');
-				//console.log(list_Keyword[i].playList);
-
-				vInfo = getPlayListInfo(this);
-				// vInfo.show();
-				if (satisfyKeyWord(list_Keyword[i], vInfo)) {
+			if (list_Keyword[i].channel == '') {
+				doc.find('[id*=item-section-]').children().each(function (index) {
+					// console.log("Pl : " + index + '------------');
+					//console.log(list_Keyword[i].playList);
+	
+					vInfo = getPlayListInfo(this);
 					// vInfo.show();
-					list_vInfo.push(vInfo);
-				} else {
-					// console.log("not satisfied keyword.");
-				}
+					if (satisfyKeyWord(list_Keyword[i], vInfo)) {
+						// vInfo.show();
+						list_vInfo.push(vInfo);
+					} else {
+						// console.log("not satisfied keyword.");
+					}
+	
+				});	
+			}else{
+				// 在频道搜索
+				doc.find('li.feed-item-container.yt-section-hover-container.browse-list-item-container.branded-page-box').each(function (index) {
+					// console.log( "P : " + index + '------------');
+					//console.log(this);
 
-			});
+					vInfo = getPlayListInfo(this);
+					if (satisfyKeyWord(list_Keyword[i], vInfo)) {
+						// vInfo.show();
+						list_vInfo.push(vInfo);
+					} else {
+						// console.log("not satisfied keyword.");
+					}
+
+				});
+
+			}
 
 			if (list_vInfo.length == 0) {
 				//强行用第一个作为list
@@ -464,46 +494,53 @@ function initialUrl(key_word) {
 		console.log("----查找URL------");
 		//key_word_local.show();
 		//console.log(key_world.playList)
-		let vedio = new Array();
-		key_word_local.self = [""];
-		if (key_word.playList != "" || key_word.channel != "") {
+
+		if (key_word.channel != "") {
+			let vedio = new Array();
+			key_word_local.self = [""];
+			key_word_local.playList = "";			
 			searchListOnline([key_word_local]).then((list_SearchResults) => {
 				//console.log("initial final : ",list_SearchResults.length);
 				//console.log(list_SearchResults)
 				//key_word_local.show();
-				if (key_word.playList != "" && key_word.playListUrl == "") {
-					//key_word.show();
-					console.log("查找play list");
-					////key_word.show();
-					vedio.push.apply(vedio, filterPlayListSearch([key_word_local], list_SearchResults));
-				} else if (key_word.channel != "" && key_word.channelUrl == "") {
+				if (key_word.channel != "" && key_word.channelUrl == "") {
 					//key_word.show();
 					console.log("查找channel");
 					////key_word.show();
 					vedio.push.apply(vedio, filterChannelSearch([key_word_local], list_SearchResults));
 				}
+				// if (key_word.playList != "" && key_word.playListUrl == "") {
+				// 	//key_word.show();
+				// 	console.log("查找play list");
+				// 	////key_word.show();
+				// 	vedio.push.apply(vedio, filterPlayListSearch([key_word_local], list_SearchResults));
+				// }
 				//console.log("initial num video : ", vedio.length);
 				// debug
-				if ((key_word.playList != "" && key_word.playListUrl != "") || (key_word.channel != "" && key_word.channelUrl != "")) {
-					console.log("url 已存在");
+				if( key_word.channel != "" && key_word.channelUrl != ""){
+					console.log("channel url 已存在");
 					console.log("-------------->");
-					resolve(key_word)
-				} else {
+
+					return new Promise(resolve(key_word));
+					
+									
+				}else {
 
 					if (vedio.length > 0) {
 						// 我们只用查找出来第一个的
 						//vedio[0].show();
-						if (key_word.playList != "" && key_word.playListUrl == "") {
-							//需要查找playlist的URL
+						// if (key_word.playList != "" && key_word.playListUrl == "") {
+						// 	//需要查找playlist的URL
 
-							//key_word_local.show();
-							key_word.channel = vedio[0].channelName;
-							key_word.channelUrl = vedio[0].channelUrl;
-							key_word.playListUrl = vedio[0].videoUrl;
-							key_word.playList = vedio[0].title;
-							console.log("找到play list");
-							// console.log(key_word.);		
-						} else if (key_word.channel != "" && key_word.channelUrl == "") {
+						// 	//key_word_local.show();
+						// 	key_word.channel = vedio[0].channelName;
+						// 	key_word.channelUrl = vedio[0].channelUrl;
+						// 	key_word.playListUrl = vedio[0].videoUrl;
+						// 	key_word.playList = vedio[0].title;
+						// 	console.log("找到play list");
+						// 	// console.log(key_word.);		
+						// } else 
+						if (key_word.channel != "" && key_word.channelUrl == "") {
 
 							key_word.channel = vedio[0].channelName;
 							key_word.channelUrl = vedio[0].channelUrl;
@@ -513,25 +550,91 @@ function initialUrl(key_word) {
 							// key_word.show();
 						}
 						console.log("-------------->");
-						resolve(key_word)
+
+						console.log("return")
+						return new Promise(resolve(key_word));
+
 					} else {
 						//没有查找到list
 						console.log("没有找到Url");
 						key_word.onOff = false
-						resolve(key_word)
-						reject("error when initializing " + key_word.self)
+						return new Promise(resolve(key_word));
+						// reject("error when initializing " + key_word.self)
 					}
 				}
+				
 
-			}).catch((error) => {
-				// 未知错误
-				console.log(error)
-				browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
-				key_word.onOff = false
-				resolve(key_word)
-				reject("error when initializing " + key_word.self)
-
-			});
+			}).then(() => {
+				if(key_word.playList != "" ) {
+					vedio = [];
+					key_word_local.playList = key_word.playList;
+					console.log("start initialize playlist");
+					searchListOnline([key_word_local]).then((list_SearchResults) => {
+		
+						if (key_word.playList != "" && key_word.playListUrl == "") {
+							//key_word.show();
+							console.log("查找play list");
+							////key_word.show();
+							vedio.push.apply(vedio, filterPlayListSearch([key_word_local], list_SearchResults));
+						}
+		
+						if( key_word.playList != "" && key_word.playListUrl != ""){
+							console.log("playlist url 已存在");
+							console.log("-------------->");
+		
+							resolve(key_word)	
+		
+											
+						}else {
+		
+							if (vedio.length > 0) {
+								// 我们只用查找出来第一个的
+								//vedio[0].show();
+								if (key_word.playList != "" && key_word.playListUrl == "") {
+									//需要查找playlist的URL
+		
+									//key_word_local.show();
+									// key_word.channel = vedio[0].channelName;
+									// key_word.channelUrl = vedio[0].channelUrl;
+									key_word.playListUrl = vedio[0].videoUrl;
+									key_word.playList = vedio[0].title;
+									console.log("找到play list");
+									// console.log(key_word.);		
+								} 
+								// if (key_word.channel != "" && key_word.channelUrl == "") {
+		
+								// 	key_word.channel = vedio[0].channelName;
+								// 	key_word.channelUrl = vedio[0].channelUrl;
+								// 	console.log("找到Channel");
+								// 	// console.log(vedio[0].channelName)
+								// 	// console.log(key_word.channel)
+								// 	// key_word.show();
+								// }
+								console.log("-------------->");
+								
+								resolve(key_word)	
+								
+							} else {
+								//没有查找到list
+								console.log("没有找到Url");
+								key_word.onOff = false
+								resolve(key_word)
+								reject("error when initializing " + key_word.self)
+							}
+						}				
+					}).catch((error) => {
+						// 未知错误
+						console.log(error)
+						browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+						key_word.onOff = false
+						resolve(key_word)
+						reject("error when initializing " + key_word.self)
+		
+					});
+		
+				}
+			})
+			
 		} else if (key_word.self.join() != "") {
 			// 不需要查找url
 			console.log("不需要初始化url");
