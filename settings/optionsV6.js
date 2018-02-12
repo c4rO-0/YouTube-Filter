@@ -608,7 +608,7 @@ function handleExport() {
             let jsonBlob = new Blob([jsonString], { type: "application/json" })
             browser.downloads.download({
                 url: URL.createObjectURL(jsonBlob),
-                filename: "YtSE_settings.json",
+                filename: "YoutTube_Filter_Settings.json",
                 conflictAction: "overwrite",
                 saveAs: true
             })
