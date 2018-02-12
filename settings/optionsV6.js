@@ -510,6 +510,9 @@ function handleImportPlaylist() {
             </li>')
             $(".ulDialog .liDialog:last .labDialog").prop("playlistHref", list.list_href[i])
             $(".ulDialog .liDialog:last .labDialog").prop("playlistChannel", list.list_channel[i])
+            $(".ulDialog .liDialog:last .labDialog").on("click", function(){
+                $(this).next(".spDialogRight").children(".ckDialog").click()
+            })
         }
         // console.log(list_title)//debug
     })
