@@ -518,7 +518,13 @@ function handleImportPlaylist() {
 function handleDialogOK() {
     let newList = new Array()
     let countOnOff
+    let isPlaylist = true
     $($(".ulDialog .liDialog").get().reverse()).each(function (idx, elm) {
+        if ($(".labDialog", elm).text()[0] == "≡") {
+            isPlaylist = true
+        } else {
+            isPlaylist = false
+        }
         let shortOutput = $(".labDialog", elm).text().slice(4)
         let longOutput = shortOutput.replace(/,/g, "\\,")
         shortOutput += ";"
@@ -533,7 +539,7 @@ function handleDialogOK() {
             } else {
                 $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", false)
             }
-            if ($(".labDialog", elm).text()[0] == "≡") {
+            if (isPlaylist) {
                 //是播放列表
                 $("#ulKeyword .spKeyword:first .ckPlaylist").prop("checked", true)
             } else {
@@ -564,7 +570,9 @@ function handleDialogOK() {
             $("#ulKeyword").on("sortstop", function () { $("#ulKeyword .labKeyword").tooltip("enable") })
             newList.unshift(labelToKeyword(0))
             newList[0].playListUrl = $(".labDialog", elm).prop("playlistHref")
-            newList[0].channel = $(".labDialog", elm).prop("playlistChannel")
+            if (isPlaylist) {
+                newList[0].channel = $(".labDialog", elm).prop("playlistChannel")
+            }
         }//if end
     })//loop end
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
