@@ -468,12 +468,15 @@ function loadSetting() {
 function getFeedPlayList() {
     let url = "https://www.youtube.com/";
     let list_title = new Array();
+    let list_href = new Array()
+    let list_channel = new Array()
     let homePage = asynHttpRequest("GET", url);
 
     return homePage.then((Page) => {
         return new Promise((resolve, reject) => {
             $(Page).find("a.guide-item.yt-uix-sessionlink.yt-valign.spf-link.has-subtitle").each(function (index) {
                 // console.log($(this).find(".guide-mix-icon").length)
+                // console.log($(this))
                 if ($(this).find(".guide-mix-icon").length <= 0) {
                     //是playlist
                     list_title.push("≡ | " + $(this).attr("title"));
@@ -481,27 +484,35 @@ function getFeedPlayList() {
                     //是合集
                     list_title.push("‣ | " + $(this).attr("title"));
                 }
+                list_href.push($(this).attr("href"))
+                list_channel.push($("p.guide-item-subtitle", this).text())
             });
             // console.log(list_title);
-            resolve(list_title)
+            // resolve(list_title)
+            resolve({ list_title: list_title, list_href: list_href, list_channel: list_channel })
         })
     });
 }
 
 function handleImportPlaylist() {
     $("#dialog").dialog("open")
-    getFeedPlayList().then((list_title) => {
+    getFeedPlayList().then((list) => {
         $("svg").css("display", "none")
-        for (let i = 0; i < list_title.length; i++) {
+        for (let i = 0; i < list.list_title.length; i++) {
             $(".ulDialog").append('\
             <li class="liDialog">\
                 <span class="spDialog">\
-                    <label class="labDialog">'+ list_title[i] + '</label>\
+                    <label class="labDialog">'+ list.list_title[i] + '</label>\
                     <span class="spDialogRight">\
                         <input name="checkbox" type="checkbox" class="ckDialog">\
                     </span>\
                 </span>\
             </li>')
+            $(".ulDialog .liDialog:last .labDialog").prop("playlistHref", list.list_href[i])
+            $(".ulDialog .liDialog:last .labDialog").prop("playlistChannel", list.list_channel[i])
+            $(".ulDialog .liDialog:last .labDialog").on("click", function(){
+                $(this).next(".spDialogRight").children(".ckDialog").click()
+            })
         }
         // console.log(list_title)//debug
     })
@@ -510,91 +521,62 @@ function handleImportPlaylist() {
 function handleDialogOK() {
     let newList = new Array()
     let countOnOff
+    let isPlaylist = true
     $($(".ulDialog .liDialog").get().reverse()).each(function (idx, elm) {
         if ($(".labDialog", elm).text()[0] == "≡") {
-            let shortOutput = $(".labDialog", elm).text().slice(4)
-            let longOutput = shortOutput.replace(/,/g, "\\,")
-            shortOutput += ";"
-            longOutput += ";"
-            if ($(".ckDialog", elm).prop("checked")) {
-                countOnOff = 0
-                $(".liKeyword").each(function () { if ($(".ckOnoff", this).prop("checked")) { countOnOff++ } })
-                $("#ulKeyword").prepend(htmlSnippet(shortOutput, longOutput))
-                $("#ulKeyword .spKeyword:first .labKeyword").prop("longOutput", longOutput)
-                if (countOnOff < limit) {
-                    $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", true)
-                } else {
-                    $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", false)
-                }
-                $("#ulKeyword .spKeyword:first .ckPlaylist").prop("checked", true)
-                //add event listener
-                $("#ulKeyword .spKeyword:first .labKeyword").on("dblclick", handleLabel)
-                $("#ulKeyword .spKeyword:first .tfKeyword").on("change", handleTextfieldChange)
-                $("#ulKeyword .spKeyword:first .tfKeyword").on("focusout", handleTextfield)
-                $("#ulKeyword .spKeyword:first .tfKeyword").on("keypress", function (e) {
-                    let code = e.keyCode || e.which
-                    if (code == 13) { this.blur() }
-                })
-                $("#ulKeyword .spKeyword:first .btDelete").on("click", handleDelete)
-                $("#ulKeyword .spKeyword:first .ckPlaylist").on("click", handlePlaylist)
-                $("#ulKeyword .spKeyword:first .ckOnoff").on("click", handleOnoff)
-                // set tooltip
-                $("#ulKeyword .labKeyword").tooltip({
-                    open: function () {
-                        if (this.offsetWidth == this.scrollWidth) {
-                            $(this).tooltip("disable")
-                            $(this).tooltip("enable")
-                        }
-                    }
-                })
-                $("#ulKeyword").on("sortstart", function () { $("#ulKeyword .labKeyword").tooltip("disable") })
-                $("#ulKeyword").on("sortstop", function () { $("#ulKeyword .labKeyword").tooltip("enable") })
-                newList.unshift(labelToKeyword(0))
-            }//if end
+            isPlaylist = true
         } else {
-            // 是合集
-            let shortOutput = $(".labDialog", elm).text().slice(4)
-            let longOutput = shortOutput.replace(/,/g, "\\,")
-            shortOutput += ";"
-            longOutput += ";"
-            if ($(".ckDialog", elm).prop("checked")) {
-                countOnOff = 0
-                $(".liKeyword").each(function () { if ($(".ckOnoff", this).prop("checked")) { countOnOff++ } })
-
-                $("#ulKeyword").prepend(htmlSnippet(shortOutput, longOutput))
-                $("#ulKeyword .spKeyword:first .labKeyword").prop("longOutput", longOutput)
-                if (countOnOff < limit) {
-                    $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", true)
-                } else {
-                    $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", false)
-                }
-                $("#ulKeyword .spKeyword:first .ckPlaylist").prop("checked", false)
-                //add event listener
-                $("#ulKeyword .spKeyword:first .labKeyword").on("dblclick", handleLabel)
-                $("#ulKeyword .spKeyword:first .tfKeyword").on("change", handleTextfieldChange)
-                $("#ulKeyword .spKeyword:first .tfKeyword").on("focusout", handleTextfield)
-                $("#ulKeyword .spKeyword:first .tfKeyword").on("keypress", function (e) {
-                    let code = e.keyCode || e.which
-                    if (code == 13) { this.blur() }
-                })
-                $("#ulKeyword .spKeyword:first .btDelete").on("click", handleDelete)
-                $("#ulKeyword .spKeyword:first .ckPlaylist").on("click", handlePlaylist)
-                $("#ulKeyword .spKeyword:first .ckOnoff").on("click", handleOnoff)
-                // set tooltip
-                $("#ulKeyword .labKeyword").tooltip({
-                    open: function () {
-                        if (this.offsetWidth == this.scrollWidth) {
-                            $(this).tooltip("disable")
-                            $(this).tooltip("enable")
-                        }
-                    }
-                })
-                $("#ulKeyword").on("sortstart", function () { $("#ulKeyword .labKeyword").tooltip("disable") })
-                $("#ulKeyword").on("sortstop", function () { $("#ulKeyword .labKeyword").tooltip("enable") })
-                newList.unshift(labelToKeyword(0))
-            }//if end
+            isPlaylist = false
         }
-
+        let shortOutput = $(".labDialog", elm).text().slice(4)
+        let longOutput = shortOutput.replace(/,/g, "\\,")
+        shortOutput += ";"
+        longOutput += ";"
+        if ($(".ckDialog", elm).prop("checked")) {
+            countOnOff = 0
+            $(".liKeyword").each(function () { if ($(".ckOnoff", this).prop("checked")) { countOnOff++ } })
+            $("#ulKeyword").prepend(htmlSnippet(shortOutput, longOutput))
+            $("#ulKeyword .spKeyword:first .labKeyword").prop("longOutput", longOutput)
+            if (countOnOff < limit) {
+                $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", true)
+            } else {
+                $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", false)
+            }
+            if (isPlaylist) {
+                //是播放列表
+                $("#ulKeyword .spKeyword:first .ckPlaylist").prop("checked", true)
+            } else {
+                //是合集
+                $("#ulKeyword .spKeyword:first .ckPlaylist").prop("checked", false)
+            }
+            //add event listener
+            $("#ulKeyword .spKeyword:first .labKeyword").on("dblclick", handleLabel)
+            $("#ulKeyword .spKeyword:first .tfKeyword").on("change", handleTextfieldChange)
+            $("#ulKeyword .spKeyword:first .tfKeyword").on("focusout", handleTextfield)
+            $("#ulKeyword .spKeyword:first .tfKeyword").on("keypress", function (e) {
+                let code = e.keyCode || e.which
+                if (code == 13) { this.blur() }
+            })
+            $("#ulKeyword .spKeyword:first .btDelete").on("click", handleDelete)
+            $("#ulKeyword .spKeyword:first .ckPlaylist").on("click", handlePlaylist)
+            $("#ulKeyword .spKeyword:first .ckOnoff").on("click", handleOnoff)
+            // set tooltip
+            $("#ulKeyword .labKeyword").tooltip({
+                open: function () {
+                    if (this.offsetWidth == this.scrollWidth) {
+                        $(this).tooltip("disable")
+                        $(this).tooltip("enable")
+                    }
+                }
+            })
+            $("#ulKeyword").on("sortstart", function () { $("#ulKeyword .labKeyword").tooltip("disable") })
+            $("#ulKeyword").on("sortstop", function () { $("#ulKeyword .labKeyword").tooltip("enable") })
+            newList.unshift(labelToKeyword(0))
+            newList[0].playListUrl = $(".labDialog", elm).prop("playlistHref")
+            if (isPlaylist) {
+                newList[0].channel = $(".labDialog", elm).prop("playlistChannel")
+            }
+        }//if end
     })//loop end
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
         $(this).prop("id", idx)
@@ -626,7 +608,7 @@ function handleExport() {
             let jsonBlob = new Blob([jsonString], { type: "application/json" })
             browser.downloads.download({
                 url: URL.createObjectURL(jsonBlob),
-                filename: "YtSE_settings.json",
+                filename: "YoutTube_Filter_Settings.json",
                 conflictAction: "overwrite",
                 saveAs: true
             })
