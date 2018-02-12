@@ -1,11 +1,8 @@
 const limit = 10
 
 function labelToKeyword(index) {
-    // console.log("saving one item...")
     let spKeyword = $("#ulKeyword .spKeyword:visible:eq(" + index + ")")
-    // console.log(spKeyword)//debug
     let longOutput = $(".labKeyword", spKeyword).prop("longOutput")
-    // console.log(longOutput)//debug
     let [keyword, channel] = parseInputLine(longOutput)
     let tempKeyword
     if ($(".ckPlaylist", spKeyword).prop("checked")) {
@@ -17,18 +14,12 @@ function labelToKeyword(index) {
         tempKeyword.onOff = false
     }
     return tempKeyword
-    // return browser.storage.local.get("list_KeyWord").then((o) => {
-    //     o.list_KeyWord[index] = tempKeyword
-    //     return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
-    // })
 }
 
 
 function handleSortUpdate() {
-    // console.log($(this).sortable("toArray"))//debug
     let order = $(this).sortable("toArray")
     let newList = new Array()
-    //set sort id
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
         $(this).prop("id", idx)
     })
@@ -49,7 +40,6 @@ function handleLabel() {
 function handleTextfield() {
     $(this).next().css("display", "inline")
     $(this).css("display", "none")
-    // console.log( saveOneChange($(this).closest(".liKeyword").index()))
 }
 
 function handlePlaylist() {
@@ -72,39 +62,29 @@ function handleOnoff() {
     //check all On/Off checkbox
     $(".liKeyword").each(function (idx) {
         isChecked = $(".ckOnoff", this).prop("checked")
-        // console.log(idx + ": " + $(".ckOnoff", this).prop("checked"))//debug
         //count
         if ($(".ckOnoff", this).prop("checked")) { count++ }
         //if greater than limit number, uncheck it
         if (count > limit) {
             //great than limit and not present entry
             if (idx != index) {
-                // console.log("!=")//debug
                 offList.push(idx)
                 $(".ckOnoff", this).prop("checked", false)
                 //present entry is great than limit, uncheck last one
             } else {
-                // console.log("==")//debug
-                // console.log("last:" + last)//debug
                 $(".liKeyword:eq(" + last + ") .ckOnoff").prop("checked", false)
                 offList.push(last)
             }
         }
         if (isChecked) {
             last = idx
-            // console.log("lllllast: " + last)//debug
         }
     })
-    // console.log(offList)
-
     let save = browser.storage.local.get("list_KeyWord").then((o) => {
         o.list_KeyWord[index].onOff = isThisChecked
-        //save
-        // console.log("saving...................")
         for (let i = 0; i < offList.length; i++) {
             o.list_KeyWord[offList[i]].onOff = false
         }
-        // console.log(o.list_KeyWord)
         return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
     })
     if (isThisChecked) {
@@ -123,8 +103,6 @@ function handleTextfieldChange() {
     $(this).next().text(shortOutput)
     $(this).next().prop("longOutput", longOutput)
     let index = $(this).closest(".liKeyword").index()
-    //send this message
-    // labelToKeyword(index)
     browser.storage.local.get("list_KeyWord").then((o) => {
         o.list_KeyWord[index] = labelToKeyword(index)
         return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
@@ -133,7 +111,6 @@ function handleTextfieldChange() {
     })
 }
 
-//subtle save version
 function handleDelete() {
     let index = $(this).closest(".liKeyword").index()
     //delete on paage
@@ -143,29 +120,18 @@ function handleDelete() {
         o.list_KeyWord.splice(index, 1)
         browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
     })
-    // save()
 }
 
 function parseInputLine(keyString) {
-    //find the character before semicolon
-    // console.log("parseR1: "+keyString)
     let preSemicolon = keyString.match(/[^\\];/g)
     if (preSemicolon === null) { preSemicolon = [""] }
-    // console.log(preSemicolon)
     for (let i = 0; i < preSemicolon.length; i++) {
         preSemicolon[i] = preSemicolon[i].slice(0, -1)
     }
-    // console.log(preSemicolon)
-    //split keyString with semicolon
-    // let [keyword, channel] = $("#tfAdd").prop("value").split(/[^\\];/, 2)
     let [keyword, channel] = keyString.split(/[^\\];/, 2)
-    // console.log("parseR2: " + keyword + "|" + channel)
-    // console.log(preSemicolon)
     if (preSemicolon[0] !== undefined) { keyword += preSemicolon[0] }
-    //if there is no channel given
     if (channel === undefined) { channel = "" }
     if (preSemicolon[1] !== undefined) { channel += preSemicolon[1] }
-    //clear \;
     keyword = keyword.replace(/\\;/g, ";")
     channel = channel.replace(/\\;/g, ";")
 
@@ -175,26 +141,21 @@ function parseInputLine(keyString) {
     for (let i = 0; i < preComma.length; i++) {
         preComma[i] = preComma[i].slice(0, -1)
     }
-    // console.log(preComma)
     let keywordArray = keyword.split(/[^\\],/g)
     for (let i = 0; i < keywordArray.length; i++) {
         if (preComma[i] !== undefined) { keywordArray[i] += preComma[i] }
         keywordArray[i] = keywordArray[i].replace(/\\,/g, ",")
     }
-    // console.log("parseR3: " + keywordArray + "|" + channel)
     return [keywordArray, channel]
 }
 
 function reverseParseKeyword(keywordArray, channel) {
-    // console.log(keywordArray)
     let result
     if (jQuery.type(keywordArray) === "array") {
         let keyword = new Array(keywordArray.length)
         for (let i = 0; i < keywordArray.length; i++) {
-            // console.log(keywordArray[i])
             keyword[i] = keywordArray[i].replace(/,/g, "\\,")
         }
-        // console.log(keyword)
         result = keyword.join(",")
     } else if (jQuery.type(keywordArray) === "string") {
         result = keywordArray.replace(/,/g, "\\,")
@@ -202,7 +163,6 @@ function reverseParseKeyword(keywordArray, channel) {
     result = result.replace(/;/g, "\\;")
     result += ";"
     result += channel.replace(/;/g, "\\;")
-    // console.log("reverse: " + result)
     return result
 }
 
@@ -226,14 +186,10 @@ function htmlSnippet(shortOutput, longOutput) {
 //subtle save version done except handler for checkbox
 function handleAdd() {
     if ($("#tfAdd").prop("value") == "") { return }
-    console.log("adding keyword...")
     let [keyword, channel] = parseInputLine($("#tfAdd").prop("value"))
     $("#tfAdd").prop("value", "")
     let longOutput = reverseParseKeyword(keyword, channel)
     let shortOutput = keyword.join(",") + ";" + channel
-    // console.log(longOutput)
-    // console.log(shortOutput)
-    //count how many ON
     let countOnOff = 0
     $(".liKeyword").each(function () { if ($(".ckOnoff", this).prop("checked")) { countOnOff++ } })
     $("#ulKeyword").prepend(htmlSnippet(shortOutput, longOutput))
@@ -244,9 +200,6 @@ function handleAdd() {
     } else {
         $("#ulKeyword .spKeyword:first .ckOnoff").prop("checked", false)
     }
-
-    // console.log($("#ulKeyword span:first"))
-    //add event listener
     $("#ulKeyword .spKeyword:first .labKeyword").on("dblclick", handleLabel)
     $("#ulKeyword .spKeyword:first .tfKeyword").on("change", handleTextfieldChange)
     $("#ulKeyword .spKeyword:first .tfKeyword").on("focusout", handleTextfield)
@@ -272,7 +225,6 @@ function handleAdd() {
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
         $(this).prop("id", idx)
     })
-    // save()
     browser.storage.local.get("list_KeyWord").then((o) => {
         if (o.list_KeyWord === undefined) {
             return browser.storage.local.set({ list_KeyWord: [labelToKeyword(0)] })
@@ -416,52 +368,6 @@ function loadSetting() {
             $(this).prop("id", idx)
         })
     })
-
-    // browser.storage.local.get("list_KeyWord").then((o) => {
-    //     if (o.list_KeyWord === undefined) {
-    //         console.log("no settings")
-    //         return
-    //     }
-    //     console.log("loading...")
-    //     for (let i = 0; i < o.list_KeyWord.length; i++) {
-    //         let keywordContent, shortOutput
-    //         let isPlaylist = false
-    //         if (o.list_KeyWord[i].playList == "") {
-    //             //if this is keyword
-    //             keywordContent = o.list_KeyWord[i].self
-    //             shortOutput = o.list_KeyWord[i].self.join(",") + ";" + o.list_KeyWord[i].channel
-    //         } else {
-    //             // if this is playlist
-    //             isPlaylist = true
-    //             keywordContent = o.list_KeyWord[i].playList
-    //             shortOutput = o.list_KeyWord[i].playList + ";" + o.list_KeyWord[i].channel
-    //         }
-    //         let longOutput = reverseParseKeyword(keywordContent, o.list_KeyWord[i].channel)
-    //         $("#ulKeyword").append(htmlSnippet(shortOutput, longOutput))
-    //         $("#ulKeyword .spKeyword:last .labKeyword").prop("longOutput", longOutput)
-    //         $("#ulKeyword .spKeyword:last .ckOnoff").prop("checked", o.list_KeyWord[i].onOff)
-    //         $("#ulKeyword .spKeyword:last .ckPlaylist").prop("checked", isPlaylist)
-    //         //add event listener
-    //         $("#ulKeyword .spKeyword:last .labKeyword").on("dblclick", handleLabel)
-    //         $("#ulKeyword .spKeyword:last .tfKeyword").on("focusout", handleTextfield)
-    //         $("#ulKeyword .spKeyword:last .btDelete").on("click", handleDelete)
-    //         $("#ulKeyword .spKeyword:last .ckPlaylist").on("click", save)
-    //         $("#ulKeyword .spKeyword:last .ckOnoff").on("click", save)
-    //         //set tooltip
-    //         $("#ulKeyword .spKeyword .labKeyword").tooltip({
-    //             open: function () {
-    //                 if (this.offsetWidth == this.scrollWidth) {
-    //                     $(this).tooltip("disable")
-    //                     $(this).tooltip("enable")
-    //                 }
-    //             }
-    //         })
-    //         $("#ulKeyword").on("sortstart", function () { $("#ulKeyword .labKeyword").tooltip("disable") })
-    //         $("#ulKeyword").on("sortstop", function () { $("#ulKeyword .labKeyword").tooltip("enable") })
-    //     }
-    // }, (error) => {
-    //     window.alert("error, can't get storage")
-    // })
 }
 
 // 获取用户已订阅的播放列表
@@ -475,8 +381,6 @@ function getFeedPlayList() {
     return homePage.then((Page) => {
         return new Promise((resolve, reject) => {
             $(Page).find("a.guide-item.yt-uix-sessionlink.yt-valign.spf-link.has-subtitle").each(function (index) {
-                // console.log($(this).find(".guide-mix-icon").length)
-                // console.log($(this))
                 if ($(this).find(".guide-mix-icon").length <= 0) {
                     //是playlist
                     list_title.push("≡ | " + $(this).attr("title"));
@@ -487,8 +391,6 @@ function getFeedPlayList() {
                 list_href.push($(this).attr("href"))
                 list_channel.push($("p.guide-item-subtitle", this).text())
             });
-            // console.log(list_title);
-            // resolve(list_title)
             resolve({ list_title: list_title, list_href: list_href, list_channel: list_channel })
         })
     });
@@ -514,7 +416,6 @@ function handleImportPlaylist() {
                 $(this).next(".spDialogRight").children(".ckDialog").click()
             })
         }
-        // console.log(list_title)//debug
     })
 }
 
@@ -629,7 +530,6 @@ function handleImport() {
 }
 
 function handleResize(event, ui) {
-    console.log(ui.size)
     browser.storage.local.set({ uiSize: ui.size })
 }
 

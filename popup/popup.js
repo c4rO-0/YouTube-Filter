@@ -1,15 +1,9 @@
 function handleFile() {
-    console.log("got a file")
-    console.log($("#fileField"))
     let file = $("#fileField")[0]
-    // let file =document.getElementById("fileField").files[0]
-    console.log(file.files[0])
     let reader = new FileReader()
     reader.readAsText(file.files[0])
     reader.onload = (myFile) => {
-        // console.log(myFile.target.result)
         let ob = JSON.parse(myFile.target.result)
-        console.log(ob[1])
     }
 }
 
@@ -49,10 +43,8 @@ function output(htmlString){
     if ($("span").hasClass("thumbnail")) {
         $(".videoList").empty()
         $(".videoList").append(htmlString)
-        console.log("clean up and append")
     } else {
         $(".videoList").append(htmlString)
-        console.log("directly append")
     }
 }
 
@@ -75,7 +67,6 @@ $(document).ready(function () {
         browser.runtime.openOptionsPage()
     })
     $("#update").on("click", function () {
-        // console.log($(".videoList").attr("status"));
         if($(".videoList").attr("status") == "updated"){
 
             $(".videoList").attr("status","updating");
@@ -91,10 +82,8 @@ $(document).ready(function () {
             })
         }
     })
-    // $("#reload").on("click", handleReload)
     handleReload()
     browser.runtime.onMessage.addListener((ms) => {
-        console.log(ms)
         if (ms.debugOutput !== undefined) {
             output(debugHtmlSnippet(ms.debugOutput))
         } else if (ms.updateComplete !== undefined) {
