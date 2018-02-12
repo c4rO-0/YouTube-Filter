@@ -60,7 +60,7 @@ function searchListOnline(list) {
 			// 对keyword查询
 			if (list[i].channel != "") {
 				if (list[i].channelUrl != "") {
-					url = "https://www.youtube.com/" + list[i].channelUrl + "/search?sp=CAISAhAB&query=" + removeNCharInArray(list[i].self).join(' ');
+					url = "https://www.youtube.com" + list[i].channelUrl + "/search?sp=CAISAhAB&query=" + removeNCharInArray(list[i].self).join(' ');
 					console.log(i + "th " + url);
 					list_p[i] = asynHttpRequestDelay("GET", url);
 				} else {
@@ -79,7 +79,7 @@ function searchListOnline(list) {
 
 			if (list[i].channel != "") {
 				if (list[i].channelUrl != "") {
-					url = "https://www.youtube.com/" + list[i].channelUrl + "/search?sp=CAISAhAB&query=" + removeNChar(list[i].playList);
+					url = "https://www.youtube.com" + list[i].channelUrl + "/search?sp=CAISAhAB&query=" + removeNChar(list[i].playList);
 					console.log(i + "th " + url);
 					list_p[i] = asynHttpRequestDelay("GET", url);
 				} else {
