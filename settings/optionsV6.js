@@ -469,13 +469,14 @@ function getFeedPlayList() {
     let url = "https://www.youtube.com/";
     let list_title = new Array();
     let list_href = new Array()
+    let list_channel = new Array()
     let homePage = asynHttpRequest("GET", url);
 
     return homePage.then((Page) => {
         return new Promise((resolve, reject) => {
             $(Page).find("a.guide-item.yt-uix-sessionlink.yt-valign.spf-link.has-subtitle").each(function (index) {
                 // console.log($(this).find(".guide-mix-icon").length)
-                // console.log(this)
+                // console.log($(this))
                 if ($(this).find(".guide-mix-icon").length <= 0) {
                     //是playlist
                     list_title.push("≡ | " + $(this).attr("title"));
@@ -484,10 +485,11 @@ function getFeedPlayList() {
                     list_title.push("‣ | " + $(this).attr("title"));
                 }
                 list_href.push($(this).attr("href"))
+                list_channel.push($("p.guide-item-subtitle", this).text())
             });
             // console.log(list_title);
             // resolve(list_title)
-            resolve({ list_title: list_title, list_href: list_href })
+            resolve({ list_title: list_title, list_href: list_href, list_channel: list_channel })
         })
     });
 }
@@ -507,6 +509,7 @@ function handleImportPlaylist() {
                 </span>\
             </li>')
             $(".ulDialog .liDialog:last .labDialog").prop("playlistHref", list.list_href[i])
+            $(".ulDialog .liDialog:last .labDialog").prop("playlistChannel", list.list_channel[i])
         }
         // console.log(list_title)//debug
     })
@@ -561,6 +564,7 @@ function handleDialogOK() {
             $("#ulKeyword").on("sortstop", function () { $("#ulKeyword .labKeyword").tooltip("enable") })
             newList.unshift(labelToKeyword(0))
             newList[0].playListUrl = $(".labDialog", elm).prop("playlistHref")
+            newList[0].channel = $(".labDialog", elm).prop("playlistChannel")
         }//if end
     })//loop end
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
