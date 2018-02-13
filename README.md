@@ -3,8 +3,14 @@
 
 通过该火狐浏览器插件可以利用关键词查询视频更新状态
 
+添加关键字
+
 ![](https://media.giphy.com/media/3ohs4dmQK9B9GCnNFC/giphy.gif)
+
+查看视频
+
 ![](https://media.giphy.com/media/l4pTdjCrc7h0OxFPG/giphy.gif)
+
 ## 导向
 
 - 开发者 [本页面](https://github.com/c4rO-0/YouTube-Filter)
