@@ -28,7 +28,7 @@ check your videos
 [reference](https://youtu.be/cer9EUKegG4)
 
 ## structure
-this add-on is developed in javascript, include 5 parts
+this add-on is developed in javascript, includes 5 parts
 
 **lib**: common classes and functions, include jQuery  
 **settings**: add and edit keywords  
