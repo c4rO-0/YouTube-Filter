@@ -998,7 +998,27 @@ numOfQueueHttp = 0;
 
 // 自动更新视频列表
 function initialAllUrl() {
-	browser.storage.local.get("list_KeyWord").then((o) => {
+	console.log("test")
+	// browser.storage.local.get("list_KeyWord").then((o) => {
+	// 	console.log("test2")
+	// 	let listPromise = new Array()
+	// 	if (o.list_KeyWord !== undefined) {
+	// 		console.log("got settings")
+	// 		for (let i = 0; i < o.list_KeyWord.length; i++) {
+	// 			// searchChannelNum(list_KeyWord[i]);
+	// 			if (o.list_KeyWord[i].onOff) {
+	// 				listPromise.push(initialUrl(o.list_KeyWord[i]))
+	// 			}
+	// 		}
+	// 		Promise.all(listPromise).then((list) => {
+	// 			browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+	// 			browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+	// 		})
+	// 	}
+
+	// })
+	storageLocalGet("list_KeyWord").then((o) => {
+		console.log("test2")
 		let listPromise = new Array()
 		if (o.list_KeyWord !== undefined) {
 			console.log("got settings")
@@ -1013,7 +1033,8 @@ function initialAllUrl() {
 				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		}
-	})
+
+	})	
 }
 
 
