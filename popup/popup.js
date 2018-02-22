@@ -72,10 +72,11 @@ function handleReload() {
 }
 $(document).ready(function () {
     $("#settings").on("click", function () {
-        browser.runtime.openOptionsPage()
+        chrome.runtime.openOptionsPage()
     })
     $("#update").on("click", function () {
-        // console.log($(".videoList").attr("status"));
+        console.log("click update")
+        console.log($(".videoList").attr("status"));
         if($(".videoList").attr("status") == "updated"){
 
             $(".videoList").attr("status","updating");
@@ -84,7 +85,7 @@ $(document).ready(function () {
                 $(".videoList").empty()
             }
             runtimeSendMessage({ updateAll: true })
-            browser.runtime.onMessage.addListener((ms) => {
+            chrome.runtime.onMessage.addListener((ms) => {
                 if (ms.updateComplete !== undefined) {
                     $(".videoList").attr("status","updated");
                 }                
@@ -93,7 +94,7 @@ $(document).ready(function () {
     })
     // $("#reload").on("click", handleReload)
     handleReload()
-    browser.runtime.onMessage.addListener((ms) => {
+    chrome.runtime.onMessage.addListener((ms) => {
         console.log(ms)
         if (ms.debugOutput !== undefined) {
             output(debugHtmlSnippet(ms.debugOutput))
