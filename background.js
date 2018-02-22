@@ -105,7 +105,7 @@ function searchListOnline(list) {
 		list_p[i].then(() => {
 			let max_strOut = 10;
 			let strOut = "searching : ";
-			// browser.runtime.sendMessage({ debugOutput: "searching" })
+			// sendMessage({ debugOutput: "searching" })
 			if (list[i].self.join(' ').length + list[i].playList.length > max_strOut) {
 				strOut += (list[i].self.join(' ') + list[i].playList).substring(0, max_strOut) + "...";
 			} else {
@@ -118,7 +118,7 @@ function searchListOnline(list) {
 			} else {
 				strOut += list[i].channel
 			}
-			browser.runtime.sendMessage({ debugOutput: strOut })
+			sendMessage({ debugOutput: strOut })
 		})
 	}
 	return Promise.all(list_p);
@@ -606,7 +606,7 @@ function initialUrl(key_word) {
 						}).catch((error) => {
 							// 未知错误
 							console.log(error)
-							browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+							sendMessage({ debugOutput: "error when checking channel url" })
 							key_word.onOff = false
 							resolve(key_word)
 							reject("error when initializing " + key_word.self)
@@ -738,7 +738,7 @@ function initialUrl(key_word) {
 							}).catch((error) => {
 								// 未知错误
 								console.log(error)
-								browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+								sendMessage({ debugOutput: "error when checking channel url" })
 								key_word.onOff = false
 								resolve(key_word)
 								reject("error when initializing " + key_word.self)
@@ -812,7 +812,7 @@ function initialUrl(key_word) {
 				}).catch((error) => {
 					// 未知错误
 					console.log(error)
-					browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+					sendMessage({ debugOutput: "error when checking channel url" })
 					key_word.onOff = false
 					resolve(key_word)
 					reject("error when initializing " + key_word.self)
@@ -836,7 +836,7 @@ function initialUrl(key_word) {
 function updateSearchList(list_KeyWord) {
 	// 筛选出符合关键词的视频
 	console.log("start update search list");
-	browser.runtime.sendMessage({ debugOutput: "updating..." })
+	sendMessage({ debugOutput: "updating..." })
 	let list_vedio = new Array();
 	let list_KeyWord_local = new Array();
 	
@@ -881,7 +881,7 @@ function updateSearchList(list_KeyWord) {
 		//console.log("final:");
 		console.log("num video : ", list_vedio.length);
 		console.log(list_Playlistmainpage.length);
-		browser.runtime.sendMessage({ debugOutput: "got " + list_vedio.length + " video(s)" })
+		sendMessage({ debugOutput: "got " + list_vedio.length + " video(s)" })
 
 		// 或得playList更新时间
 		for (let i = 0; i < list_KeyWord_local.length; i++) {
@@ -905,7 +905,7 @@ function updateSearchList(list_KeyWord) {
 		//let  storageVideo = browser.storage.local.set({ObjListVideo:{list_vedio}});
 		let storageVideo = storageLocalSet({ list_vedio });
 		storageVideo.then(() => {
-			browser.runtime.sendMessage({ updateComplete: "update complete" })
+			sendMessage({ updateComplete: "update complete" })
 		})
 	});
 	// //按按钮发消息
@@ -1015,7 +1015,7 @@ function initialAllUrl() {
 			}
 			Promise.all(listPromise).then((list) => {
 				storageLocalSet({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				sendMessage({ debugOutput: "finish initialization" })
 			})
 		}
 
@@ -1165,7 +1165,7 @@ browser.runtime.onMessage.addListener((ms) => {
 			initialUrl(o.list_KeyWord[ms.idxToBeInit]).then((initializedKeyword) => {
 				o.list_KeyWord[ms.idxToBeInit] = initializedKeyword
 				storageLocalSet({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.topFewToBeInit !== undefined) {
@@ -1179,7 +1179,7 @@ browser.runtime.onMessage.addListener((ms) => {
 			}
 			Promise.all(promiseArray).then((list) => {
 				storageLocalSet({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.bottomFewToBeInit !== undefined) {
@@ -1193,7 +1193,7 @@ browser.runtime.onMessage.addListener((ms) => {
 			Promise.all(promiseArray).then((list) => {
 
 				storageLocalSet({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.updateAll == true) {
