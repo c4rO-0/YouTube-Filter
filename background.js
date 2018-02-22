@@ -1,3 +1,14 @@
+//<---- first run--->
+let browserInfo=getBrowserInfo()
+let browserType
+if(browserInfo["name"]=="Firefox"){
+	browserType=browser;
+}else if(browserInfo["name"]=="Chrome"){
+	browserType=chrome;
+}else{
+	browserType=browser;
+}
+
 
 // 对infoVideo数组中,视频更新顺序进行排序. 从新到旧
 function videoMergeSort(array) {  //采用自上而下的递归方法
@@ -22,7 +33,7 @@ function merge(left, right) { //合并两个子数组
 
 //for debug
 function popUpNotification(message) {
-	chrome.notifications.create({
+	browserType.notifications.create({
 		"type": "basic",
 		"title": "Hey boy",
 		"message": message
@@ -36,7 +47,7 @@ function checkResponse(xhr) {
 	let blobFile = new Blob([xhr.response], { type: "text/html;charset=UTF-8" })
 	// var blobFile = new Blob([xmlHttp.response], { type: "text/plain;charset=UTF-8" })
 	let blobUrl = URL.createObjectURL(blobFile)
-	let creating = chrome.tabs.create({
+	let creating = browserType.tabs.create({
 		url: blobUrl
 	})
 }
@@ -902,18 +913,18 @@ function updateSearchList(list_KeyWord) {
 			console.log("<-----" + i + "-th video----->");
 			list_vedio[i].show();
 		}
-		//let  storageVideo = chrome.storage.local.set({ObjListVideo:{list_vedio}});
+		//let  storageVideo = browserType.storage.local.set({ObjListVideo:{list_vedio}});
 		let storageVideo = storageLocalSet({ list_vedio });
 		storageVideo.then(() => {
 			runtimeSendMessage({ updateComplete: "update complete" })
 		})
 	});
 	// //按按钮发消息
-	// chrome.tabs.query({
+	// browserType.tabs.query({
 	// 	url: "*://*.youtube.com/feed/subscription*"
 	// }).then((tabs) => {
 	// 	for (let tab of tabs) {
-	// 		chrome.tabs.runtimeSendMessage(
+	// 		browserType.tabs.runtimeSendMessage(
 	// 			tab.id,
 	// 			{ greeting: "Hey boy, from background" }
 	// 		)
@@ -956,14 +967,14 @@ console.log(tNow, tNow.valueOf());
 numOfQueueHttp = 0;
 
 // 目前只储存两个
-//chrome.storage.local.get("list_KeyWord").then((o) => {
+//browserType.storage.local.get("list_KeyWord").then((o) => {
 //	if (o.list_KeyWord === undefined) {
 //		console.log("no settings, so making some")
 //		let list_KeyWord = new Array();
 //		list_KeyWord[0] = new keyWord("爸爸去哪儿5,完整版,ENG SUB", "湖南卫视芒果TV官方频道 China HunanTV Official Channel");
 //		list_KeyWord[1] = new keyWord("", "", "Season One - THE Acapella Producer");
 //		list_KeyWord[2] = new keyWord("《萌仔萌萌宅》", "湖南卫视芒果TV官方频道 China HunanTV Official Channel");
-//		chrome.storage.local.set({ list_KeyWord })
+//		browserType.storage.local.set({ list_KeyWord })
 //	}
 //})
 
@@ -977,7 +988,7 @@ numOfQueueHttp = 0;
 // console.log(list_KeyWord[2].self.join().length)
 // console.log(list_KeyWord[1].self.length)
 // console.log(list_KeyWord[1].self[0].length)
-// chrome.storage.local.set({ list_KeyWord })
+// browserType.storage.local.set({ list_KeyWord })
 // console.log("end")
 
 // list_KeyWord[1] = new keyWord("", "", "Season One - THE Acapella Producer");
@@ -996,7 +1007,7 @@ numOfQueueHttp = 0;
 //
 //}
 
-//chrome.storage.local.clear();
+//browserType.storage.local.clear();
 //console.log("初始化完成");
 //convertReTime2Int("2 小时前");
 
@@ -1065,13 +1076,13 @@ let timeGap = 60 * 60 * 1000; // 60 min
 // }, 5 * 1000); //浏览器启动5秒后再执行
 
 
-// chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
+// browserType.webNavigation.onHistoryStateUpdated.addListener((details) => {
 // 	console.log(details);
-// 	chrome.tabs.query({
+// 	browserType.tabs.query({
 // 		url: "*://*.youtube.com/feed/subscription*"
 // 	}).then((tabs) => {
 // 		for (let tab of tabs) {
-// 			chrome.tabs.sendMessage(
+// 			browserType.tabs.sendMessage(
 // 				tab.id,
 // 				{ greeting: "Hey boy, from background" }
 // 			)
@@ -1084,26 +1095,26 @@ function handleTabUpdate(tabId, changeInfo, tabInfo) {
 	if (String(changeInfo.url).includes("https://www.youtube.com/feed/subscriptions")) {
 		console.log("Tab: " + tabId + " URL changed to " + changeInfo.url);
 		console.log(changeInfo)
-		chrome.tabs.query({
+		browserType.tabs.query({
 			url: "*://*.youtube.com/feed/subscription*"
 		}).then((tabs) => {
 			console.log("refreshing it")
 			for (let tab of tabs) {
-				chrome.tabs.reload(tab.Id)
+				browserType.tabs.reload(tab.Id)
 			}
-			chrome.tabs.onUpdated.removeListener(handleTabUpdate)
+			browserType.tabs.onUpdated.removeListener(handleTabUpdate)
 
-			setTimeout(() => { chrome.tabs.onUpdated.addListener(handleTabUpdate) }, 30000)
+			setTimeout(() => { browserType.tabs.onUpdated.addListener(handleTabUpdate) }, 30000)
 
 		}).catch((error) => { console.log(`Error:${error}`) })
 	}
 }
-//chrome.tabs.onUpdated.addListener(handleTabUpdate);
+//browserType.tabs.onUpdated.addListener(handleTabUpdate);
 
 
 function sendMessageToTabs(tabs) {
 	for (let tab of tabs) {
-		chrome.tabs.sendMessage(
+		browserType.tabs.sendMessage(
 			tab.id,
 			{ greeting: "Hi from background script" }
 		).then(response => {
@@ -1115,11 +1126,11 @@ function sendMessageToTabs(tabs) {
 
 // 一直监测
 //function ListenActiveYoutube(timeGap){
-//	var querying = chrome.tabs.query({active: true, lastFocusedWindow : true, url : "*://*.youtube.com/feed/subscription*"});
+//	var querying = browserType.tabs.query({active: true, lastFocusedWindow : true, url : "*://*.youtube.com/feed/subscription*"});
 //	querying.then((tabs) => {
 //		sendMessageToTabs(tabs);
 //		//for (let tab of tabs) {
-//		//	//chrome.tabs.reload(tab.Id)
+//		//	//browserType.tabs.reload(tab.Id)
 //		//}
 //		setTimeout(() => { ListenActiveYoutube(timeGap) }, timeGap)
 //	}
@@ -1131,20 +1142,20 @@ function handleTabUpdate(tabId, changeInfo, tabInfo) {
 	if (String(changeInfo.url).includes("https://www.youtube.com/feed/subscriptions")) {
 		console.log("Tab: " + tabId + " URL changed to " + changeInfo.url);
 		console.log(changeInfo)
-		chrome.tabs.query({
+		browserType.tabs.query({
 			active: true,
 			lastFocusedWindow: true,
 			url: "*://*.youtube.com/feed/subscription*"
 		}).then((tabs) => {
 			sendMessageToTabs(tabs);
-		}).catch((error) => { console.log(`chrome.tabs.query :${error}`) })
+		}).catch((error) => { console.log(`browserType.tabs.query :${error}`) })
 	}
 }
-chrome.tabs.onUpdated.addListener(handleTabUpdate);
+browserType.tabs.onUpdated.addListener(handleTabUpdate);
 
 
-chrome.browserAction.onClicked.addListener(() => {
-	// chrome.runtime.openOptionsPage()
+browserType.browserAction.onClicked.addListener(() => {
+	// browserType.runtime.openOptionsPage()
 
 	storageLocalGet("list_KeyWord").then((o) => {
 		if (o.list_KeyWord !== undefined) {
@@ -1157,7 +1168,7 @@ chrome.browserAction.onClicked.addListener(() => {
 
 })
 
-chrome.runtime.onMessage.addListener((ms) => {
+browserType.runtime.onMessage.addListener((ms) => {
 	console.log(ms)
 	if (ms.idxToBeInit !== undefined) {
 		// console.log("initializing one")
@@ -1206,19 +1217,19 @@ chrome.runtime.onMessage.addListener((ms) => {
 	}
 })
 
-// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
+// browserType.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
 // 	if (String(changeInfo.url).includes("https://www.youtube.com/feed/subscriptions")) {
 // 		console.log("Tab: " + tabId + " URL changed to " + changeInfo.url);
 // 		console.log(changeInfo)
-// 		chrome.tabs.query({
+// 		browserType.tabs.query({
 // 			url: "*://*.youtube.com/feed/subscription*"
 // 		}).then((tabs) => {
 // 			console.log("manually injecting...")
 // 			for (let tab of tabs) {
-// 				chrome.tabs.executeScript({ file: "lib/jquery-3.2.1.min.js" }).then(() => {
-// 					return chrome.tabs.executeScript({ file: "lib/core.js" })
+// 				browserType.tabs.executeScript({ file: "lib/jquery-3.2.1.min.js" }).then(() => {
+// 					return browserType.tabs.executeScript({ file: "lib/core.js" })
 // 				}).then(() => {
-// 					return chrome.tabs.executeScript({ file: "content_scripts/content.js" })
+// 					return browserType.tabs.executeScript({ file: "content_scripts/content.js" })
 // 				})
 // 			}
 // 		}).catch((error) => { console.log(`Error:${error}`) })

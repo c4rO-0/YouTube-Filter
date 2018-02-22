@@ -1,5 +1,16 @@
 const limit = 10
 
+let browserInfo=getBrowserInfo()
+let browserType
+if(browserInfo["name"]=="Firefox"){
+	browserType=browser;
+}else if(browserInfo["name"]=="Chrome"){
+	browserType=chrome;
+}else{
+	browserType=browser;
+}
+
+
 function labelToKeyword(index) {
     // console.log("saving one item...")
     let spKeyword = $("#ulKeyword .spKeyword:visible:eq(" + index + ")")
@@ -606,7 +617,7 @@ function handleExport() {
             let jsonString = JSON.stringify(o.list_KeyWord)
             // console.log(jsonString)
             let jsonBlob = new Blob([jsonString], { type: "application/json" })
-            chrome.downloads.download({
+            browserType.downloads.download({
                 url: URL.createObjectURL(jsonBlob),
                 filename: "YoutTube_Filter_Settings.json",
                 conflictAction: "overwrite",

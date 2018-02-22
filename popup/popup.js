@@ -1,3 +1,14 @@
+let browserInfo=getBrowserInfo()
+let browserType
+if(browserInfo["name"]=="Firefox"){
+	browserType=browser;
+}else if(browserInfo["name"]=="Chrome"){
+	browserType=chrome;
+}else{
+	browserType=browser;
+}
+
+
 function handleFile() {
     console.log("got a file")
     console.log($("#fileField"))
@@ -72,7 +83,7 @@ function handleReload() {
 }
 $(document).ready(function () {
     $("#settings").on("click", function () {
-        chrome.runtime.openOptionsPage()
+        browserType.runtime.openOptionsPage()
     })
     $("#update").on("click", function () {
         console.log("click update")
@@ -85,7 +96,7 @@ $(document).ready(function () {
                 $(".videoList").empty()
             }
             runtimeSendMessage({ updateAll: true })
-            chrome.runtime.onMessage.addListener((ms) => {
+            browserType.runtime.onMessage.addListener((ms) => {
                 if (ms.updateComplete !== undefined) {
                     $(".videoList").attr("status","updated");
                 }                
@@ -94,7 +105,7 @@ $(document).ready(function () {
     })
     // $("#reload").on("click", handleReload)
     handleReload()
-    chrome.runtime.onMessage.addListener((ms) => {
+    browserType.runtime.onMessage.addListener((ms) => {
         console.log(ms)
         if (ms.debugOutput !== undefined) {
             output(debugHtmlSnippet(ms.debugOutput))
