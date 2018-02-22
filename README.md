@@ -1,7 +1,7 @@
 # Youtube Filter
 [中文](https://github.com/c4rO-0/YouTube-Filter/blob/master/README.md) | [English](https://github.com/c4rO-0/YouTube-Filter/blob/master/README_en.md)
 
-通过该火狐浏览器插件可以利用关键词查询视频更新状态
+通过该火狐浏览器插件可以利用关键词查询视频更新状态. 追剧神器.
 
 添加关键字
 
