@@ -58,7 +58,7 @@ function handlePlaylist() {
         o.list_KeyWord[index] = labelToKeyword(index)
         return storageLocalSet({ list_KeyWord: o.list_KeyWord })
     }).then(() => {
-        sendMessage({ idxToBeInit: index })
+        runtimeSendMessage({ idxToBeInit: index })
     })
 }
 
@@ -109,7 +109,7 @@ function handleOnoff() {
     })
     if (isThisChecked) {
         save.then(() => {
-            sendMessage({ idxToBeInit: index })
+            runtimeSendMessage({ idxToBeInit: index })
         })
     }
 }
@@ -129,7 +129,7 @@ function handleTextfieldChange() {
         o.list_KeyWord[index] = labelToKeyword(index)
         return storageLocalSet({ list_KeyWord: o.list_KeyWord })
     }).then(() => {
-        sendMessage({ idxToBeInit: index })
+        runtimeSendMessage({ idxToBeInit: index })
     })
 }
 
@@ -281,7 +281,7 @@ function handleAdd() {
             return storageLocalSet({ list_KeyWord: o.list_KeyWord })
         }
     }).then(() => {
-        sendMessage({ idxToBeInit: 0 })
+        runtimeSendMessage({ idxToBeInit: 0 })
     })
 }
 
@@ -349,7 +349,7 @@ function addListKeyword(listKeyword) {
             return storageLocalSet({ list_KeyWord: allList })
         }//maybe don't need to sendMessage, if need check handleAdd()
     }).then(() => {
-        sendMessage({ bottomFewToBeInit: listKeyword.length })
+        runtimeSendMessage({ bottomFewToBeInit: listKeyword.length })
     })
 }
 
@@ -591,7 +591,7 @@ function handleDialogOK() {
             return storageLocalSet({ list_KeyWord: newList })
         }
     }).then(() => {
-        sendMessage({ topFewToBeInit: count })
+        runtimeSendMessage({ topFewToBeInit: count })
 
     })
 

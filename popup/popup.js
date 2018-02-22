@@ -83,7 +83,7 @@ $(document).ready(function () {
             if ($("span").hasClass("thumbnail")) {
                 $(".videoList").empty()
             }
-            sendMessage({ updateAll: true })
+            runtimeSendMessage({ updateAll: true })
             browser.runtime.onMessage.addListener((ms) => {
                 if (ms.updateComplete !== undefined) {
                     $(".videoList").attr("status","updated");
