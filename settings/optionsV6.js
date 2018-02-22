@@ -606,7 +606,7 @@ function handleExport() {
             let jsonString = JSON.stringify(o.list_KeyWord)
             // console.log(jsonString)
             let jsonBlob = new Blob([jsonString], { type: "application/json" })
-            browser.downloads.download({
+            chrome.downloads.download({
                 url: URL.createObjectURL(jsonBlob),
                 filename: "YoutTube_Filter_Settings.json",
                 conflictAction: "overwrite",
