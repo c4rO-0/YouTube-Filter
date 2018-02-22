@@ -999,26 +999,8 @@ numOfQueueHttp = 0;
 // 自动更新视频列表
 function initialAllUrl() {
 	console.log("test")
-	// browser.storage.local.get("list_KeyWord").then((o) => {
-	// 	console.log("test2")
-	// 	let listPromise = new Array()
-	// 	if (o.list_KeyWord !== undefined) {
-	// 		console.log("got settings")
-	// 		for (let i = 0; i < o.list_KeyWord.length; i++) {
-	// 			// searchChannelNum(list_KeyWord[i]);
-	// 			if (o.list_KeyWord[i].onOff) {
-	// 				listPromise.push(initialUrl(o.list_KeyWord[i]))
-	// 			}
-	// 		}
-	// 		Promise.all(listPromise).then((list) => {
-	// 			browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
-	// 			browser.runtime.sendMessage({ debugOutput: "finish initialization" })
-	// 		})
-	// 	}
 
-	// })
 	storageLocalGet("list_KeyWord").then((o) => {
-		console.log("test2")
 		let listPromise = new Array()
 		if (o.list_KeyWord !== undefined) {
 			console.log("got settings")
@@ -1064,8 +1046,16 @@ function updateSearchListIterator(timeGap) {
 browseInfo = getBrowseInfo();
 console.log(browseInfo["name"],browseInfo["version"]);
 
+//测试 storage 和set
+// storageLocalClear()
+// storageLocalSet( {"list_KeyWord": [1,2,3]} )
+// storageLocalGet("list_KeyWord").then((o)=>{
+// 	console.log(o)
+// })
+
 //初始化化
 initialAllUrl()
+
 
 let timeGap = 60 * 60 * 1000; // 60 min
 // setTimeout(() => {
