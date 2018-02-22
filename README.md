@@ -4,7 +4,7 @@
 通过该火狐浏览器插件可以利用关键词查询视频更新状态. 
 
 追剧神器.
-[点我获取插件](https://addons.mozilla.org/en-US/firefox/addon/youtube-filter-c4r/)
+[点我获取插件](https://addons.mozilla.org/zh-CN/firefox/addon/youtube-filter-c4r/)
 
 添加关键字
 
