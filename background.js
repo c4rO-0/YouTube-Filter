@@ -903,7 +903,7 @@ function updateSearchList(list_KeyWord) {
 			list_vedio[i].show();
 		}
 		//let  storageVideo = browser.storage.local.set({ObjListVideo:{list_vedio}});
-		let storageVideo = browser.storage.local.set({ list_vedio });
+		let storageVideo = storageLocalSet({ list_vedio });
 		storageVideo.then(() => {
 			browser.runtime.sendMessage({ updateComplete: "update complete" })
 		})
@@ -922,7 +922,7 @@ function updateSearchList(list_KeyWord) {
 }
 
 function updateActivatedList() {
-	browser.storage.local.get("list_KeyWord").then((o) => {
+	storageLocalGet("list_KeyWord").then((o) => {
 		let activatedList = new Array()
 		for (let i = 0; i < o.list_KeyWord.length; i++) {
 			if (o.list_KeyWord[i].onOff) {
@@ -948,6 +948,10 @@ function updateActivatedList() {
 console.log("开始初始化");
 var tNow = new Date();
 console.log(tNow, tNow.valueOf());
+
+// 获取浏览器信息
+// browserInfo = getBrowserInfo();
+// console.log(browserInfo["name"],browserInfo["version"]);
 
 numOfQueueHttp = 0;
 
@@ -998,7 +1002,6 @@ numOfQueueHttp = 0;
 
 // 自动更新视频列表
 function initialAllUrl() {
-	console.log("test")
 
 	storageLocalGet("list_KeyWord").then((o) => {
 		let listPromise = new Array()
@@ -1011,7 +1014,7 @@ function initialAllUrl() {
 				}
 			}
 			Promise.all(listPromise).then((list) => {
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
 				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		}
@@ -1025,7 +1028,7 @@ function updateSearchListIterator(timeGap) {
 	var Now = new Date();
 	console.log("updat time : ", Now);
 	// updateSearchList(list_KeyWord);
-	browser.storage.local.get("list_KeyWord").then((o) => {
+	storageLocalGet("list_KeyWord").then((o) => {
 
 		if (o.list_KeyWord !== undefined) {
 			let activatedList = new Array()
@@ -1042,9 +1045,7 @@ function updateSearchListIterator(timeGap) {
 
 }
 
-// 获取浏览器信息
-browseInfo = getBrowseInfo();
-console.log(browseInfo["name"],browseInfo["version"]);
+
 
 //测试 storage 和set
 // storageLocalClear()
@@ -1145,7 +1146,7 @@ browser.tabs.onUpdated.addListener(handleTabUpdate);
 browser.browserAction.onClicked.addListener(() => {
 	// browser.runtime.openOptionsPage()
 
-	browser.storage.local.get("list_KeyWord").then((o) => {
+	storageLocalGet("list_KeyWord").then((o) => {
 		if (o.list_KeyWord !== undefined) {
 			updateSearchList(o.list_KeyWord);
 		}
@@ -1160,16 +1161,16 @@ browser.runtime.onMessage.addListener((ms) => {
 	console.log(ms)
 	if (ms.idxToBeInit !== undefined) {
 		// console.log("initializing one")
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		storageLocalGet("list_KeyWord").then((o) => {
 			initialUrl(o.list_KeyWord[ms.idxToBeInit]).then((initializedKeyword) => {
 				o.list_KeyWord[ms.idxToBeInit] = initializedKeyword
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
 				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.topFewToBeInit !== undefined) {
 		// console.log("initializing few")
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		storageLocalGet("list_KeyWord").then((o) => {
 			let promiseArray = new Array()
 			for (let i = 0; i < ms.topFewToBeInit; i++) {
 				if (o.list_KeyWord[i].onOff) {
@@ -1177,12 +1178,12 @@ browser.runtime.onMessage.addListener((ms) => {
 				}
 			}
 			Promise.all(promiseArray).then((list) => {
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
 				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.bottomFewToBeInit !== undefined) {
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		storageLocalGet("list_KeyWord").then((o) => {
 			let promiseArray = new Array()
 			for (let i = 0; i < ms.bottomFewToBeInit; i++) {
 				if (o.list_KeyWord[o.list_KeyWord.length - 1 - i].onOff) {
@@ -1191,13 +1192,13 @@ browser.runtime.onMessage.addListener((ms) => {
 			}
 			Promise.all(promiseArray).then((list) => {
 
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
 				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.updateAll == true) {
 		console.log("got it, updating...")
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		storageLocalGet("list_KeyWord").then((o) => {
 			// updateSearchList(o.list_KeyWord)
 			updateActivatedList()
 

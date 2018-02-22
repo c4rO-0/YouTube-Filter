@@ -59,7 +59,7 @@ function output(htmlString){
 function handleReload() {
     console.log("reloading...")
     output(debugHtmlSnippet("reloading..."))
-    browser.storage.local.get("list_vedio").then((o) => {
+    storageLocalGet("list_vedio").then((o) => {
         if (o.list_vedio !== undefined && o.list_vedio.length > 0) {
             $(".videoList").empty()
             for (let i = 0; i < o.list_vedio.length; i++) {

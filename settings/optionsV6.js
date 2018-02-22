@@ -32,11 +32,11 @@ function handleSortUpdate() {
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
         $(this).prop("id", idx)
     })
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         for (let i = 0; i < o.list_KeyWord.length; i++) {
             newList[i] = o.list_KeyWord[order[i]]
         }
-        return browser.storage.local.set({ list_KeyWord: newList })
+        return storageLocalSet({ list_KeyWord: newList })
     })
 }
 
@@ -54,9 +54,9 @@ function handleTextfield() {
 
 function handlePlaylist() {
     let index = $(this).closest(".liKeyword").index()
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         o.list_KeyWord[index] = labelToKeyword(index)
-        return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+        return storageLocalSet({ list_KeyWord: o.list_KeyWord })
     }).then(() => {
         browser.runtime.sendMessage({ idxToBeInit: index })
     })
@@ -97,7 +97,7 @@ function handleOnoff() {
     })
     // console.log(offList)
 
-    let save = browser.storage.local.get("list_KeyWord").then((o) => {
+    let save = storageLocalGet("list_KeyWord").then((o) => {
         o.list_KeyWord[index].onOff = isThisChecked
         //save
         // console.log("saving...................")
@@ -105,7 +105,7 @@ function handleOnoff() {
             o.list_KeyWord[offList[i]].onOff = false
         }
         // console.log(o.list_KeyWord)
-        return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+        return storageLocalSet({ list_KeyWord: o.list_KeyWord })
     })
     if (isThisChecked) {
         save.then(() => {
@@ -125,9 +125,9 @@ function handleTextfieldChange() {
     let index = $(this).closest(".liKeyword").index()
     //send this message
     // labelToKeyword(index)
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         o.list_KeyWord[index] = labelToKeyword(index)
-        return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+        return storageLocalSet({ list_KeyWord: o.list_KeyWord })
     }).then(() => {
         browser.runtime.sendMessage({ idxToBeInit: index })
     })
@@ -139,9 +139,9 @@ function handleDelete() {
     //delete on paage
     $(this).closest(".liKeyword").remove()
     //delete in browser
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         o.list_KeyWord.splice(index, 1)
-        browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+        storageLocalSet({ list_KeyWord: o.list_KeyWord })
     })
     // save()
 }
@@ -273,12 +273,12 @@ function handleAdd() {
         $(this).prop("id", idx)
     })
     // save()
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         if (o.list_KeyWord === undefined) {
-            return browser.storage.local.set({ list_KeyWord: [labelToKeyword(0)] })
+            return storageLocalSet({ list_KeyWord: [labelToKeyword(0)] })
         } else {
             o.list_KeyWord.unshift(labelToKeyword(0))
-            return browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
+            return storageLocalSet({ list_KeyWord: o.list_KeyWord })
         }
     }).then(() => {
         browser.runtime.sendMessage({ idxToBeInit: 0 })
@@ -340,13 +340,13 @@ function addListKeyword(listKeyword) {
         $(this).prop("id", idx)
     })
     //save keyword list
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         let allList
         if (o.list_KeyWord === undefined) {
-            return browser.storage.local.set({ list_KeyWord: listKeyword })
+            return storageLocalSet({ list_KeyWord: listKeyword })
         } else {
             allList = o.list_KeyWord.concat(listKeyword)
-            return browser.storage.local.set({ list_KeyWord: allList })
+            return storageLocalSet({ list_KeyWord: allList })
         }//maybe don't need to sendMessage, if need check handleAdd()
     }).then(() => {
         browser.runtime.sendMessage({ bottomFewToBeInit: listKeyword.length })
@@ -354,8 +354,8 @@ function addListKeyword(listKeyword) {
 }
 
 function loadSetting() {
-    let prmsSaveList = browser.storage.local.get("list_KeyWord")
-    let prmsOffList = browser.storage.local.get("list_OffKeyWord")
+    let prmsSaveList = storageLocalGet("list_KeyWord")
+    let prmsOffList = storageLocalGet("list_OffKeyWord")
     Promise.all([prmsSaveList, prmsOffList]).then((o) => {
         if (o[0].list_KeyWord === undefined && o[1].list_OffKeyWord === undefined) {
             console.log("no settings")
@@ -583,12 +583,12 @@ function handleDialogOK() {
     })
     //save
     let count = newList.length
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         if (o.list_KeyWord === undefined) {
-            return browser.storage.local.set({ list_KeyWord: newList })
+            return storageLocalSet({ list_KeyWord: newList })
         } else {
             newList = newList.concat(o.list_KeyWord)
-            return browser.storage.local.set({ list_KeyWord: newList })
+            return storageLocalSet({ list_KeyWord: newList })
         }
     }).then(() => {
         browser.runtime.sendMessage({ topFewToBeInit: count })
@@ -601,7 +601,7 @@ function handleDialogOK() {
 }
 
 function handleExport() {
-    browser.storage.local.get("list_KeyWord").then((o) => {
+    storageLocalGet("list_KeyWord").then((o) => {
         if (o.list_KeyWord !== undefined) {
             let jsonString = JSON.stringify(o.list_KeyWord)
             // console.log(jsonString)
@@ -630,11 +630,11 @@ function handleImport() {
 
 function handleResize(event, ui) {
     console.log(ui.size)
-    browser.storage.local.set({ uiSize: ui.size })
+    storageLocalSet({ uiSize: ui.size })
 }
 
 $(document).ready(function () {
-    browser.storage.local.get("uiSize").then((o) => {
+    storageLocalGet("uiSize").then((o) => {
         if (o.uiSize !== undefined) {
             $(".col > ul").css("width", o.uiSize.width)
             $(".col > ul").css("height", o.uiSize.height)

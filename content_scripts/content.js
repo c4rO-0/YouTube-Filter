@@ -203,7 +203,7 @@ function Insert(){
 	}else{
 		console.log("insert now");
 		let vYoutube = 0; //区分youtube版本， 旧版为0，新版为1. 考虑以后有更多版本，为整数
-		let gettingItem = browser.storage.local.get("list_vedio");
+		let gettingItem = storageLocalGet("list_vedio");
 		let array_insertObj = new Array();
 		// let indexArray = new Array();
 		gettingItem.then((Obj) => {
