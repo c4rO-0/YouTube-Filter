@@ -1039,7 +1039,13 @@ function updateSearchListIterator(timeGap) {
 
 }
 
+// 获取浏览器信息
+browseInfo = getBrowseInfo();
+console.log(browseInfo["name"],browseInfo["version"]);
+
+//初始化化
 initialAllUrl()
+
 let timeGap = 60 * 60 * 1000; // 60 min
 // setTimeout(() => {
 // 	// console.log("First Search List");
