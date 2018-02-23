@@ -47,6 +47,8 @@
         // "activeTab",
         "notifications",
         "*://*.youtube.com/*",
+        "webRequest",
+        "webRequestBlocking",
         "<all_urls>",
         "storage",
         "tabs",
