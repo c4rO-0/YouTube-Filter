@@ -30,14 +30,14 @@ function htmlSnippet(videoInfo) {
         <div class="col">\
             <div class="dismissable">\
                 <span class="thumbnail">\
-                    <a href="https://www.youtube.com' + videoInfo.videoUrl + '">\
+                    <a href="https://www.youtube.com' + videoInfo.videoUrl + '" target=\'_newtab\'>\
                         <div>\
                             <img class="img-shadow" src="' + videoInfo.coverUrl + '"\
                             width="168">\
                         </div>\
                     </a>\
                 </span>\
-                <a href="https://www.youtube.com' + videoInfo.videoUrl + '">\
+                <a href="https://www.youtube.com' + videoInfo.videoUrl + '" target=\'_newtab\'>\
                     <h3>\
                         <span class="video-title">' + videoInfo.title + '</span>\
                     </h3>\
