@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "YouTube Filter",
-    "description": "YouTube subscribe extension, highlight interesting contents",
-    "version": "1.1",
+    "name": "YouTube Filter追剧神器",
+    "description": "利用关键词查询Youtube视频更新状态. 追剧神器",
+    "version": "1.1.0",
     "browser_action": {
         "browser_style": true,
         "default_icon": {
@@ -14,19 +14,6 @@
         "default_popup":"popup/popup.html"
         
     },
-    // "content_scripts": [
-    //     {
-    //         "run_at": "document_end",
-    //         "matches": [
-    //             "*://*.youtube.com/feed/subscription*"
-    //         ],
-    //         "js": [
-    //             "lib/jquery-3.2.1.min.js",
-    //             "lib/core.js",
-    //             "content_scripts/content.js"
-    //         ]
-    //     }
-    // ],
     "background": {
         "scripts": [
             "lib/jquery-3.2.1.min.js",
@@ -40,11 +27,9 @@
     },
     "options_ui": {
         "page": "settings/optionsV6.html",
-        // "page": "lib/test.html",
         "open_in_tab": true
     },
     "permissions": [
-        // "activeTab",
         "notifications",
         "*://*.youtube.com/*",
         "webRequest",
@@ -55,6 +40,5 @@
         "webNavigation",
         "downloads"
     ],
-    // "content_security_policy": "script-src 'self' 'sha256-/nLaDjLjCQs9I0v3MGE2bIX/U6rHqCAVc4r/uI3I34o='; object-src 'self'",
     "author": "c4r"
 }
