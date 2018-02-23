@@ -1172,7 +1172,7 @@ browserType.webRequest.onBeforeSendHeaders.addListener(
 )
 
 browserType.runtime.onMessage.addListener((ms) => {
-	console.log(ms)
+	// console.log(ms)
 	if (ms.idxToBeInit !== undefined) {
 		// console.log("initializing one")
 		storageLocalGet("list_KeyWord").then((o) => {
