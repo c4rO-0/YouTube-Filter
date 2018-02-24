@@ -1,26 +1,27 @@
 let browserInfo=getBrowserInfo()
 let browserType
 if(browserInfo["name"]=="Firefox"){
-	browserType=browser;
+    browserType=browser;
+    
 }else if(browserInfo["name"]=="Chrome"){
-	browserType=chrome;
+    browserType=chrome;
 }else{
 	browserType=browser;
 }
 
 
 function handleFile() {
-    console.log("got a file")
-    console.log($("#fileField"))
+   browserType.extension.getBackgroundPage().console.log("got a file")
+   browserType.extension.getBackgroundPage().console.log($("#fileField"))
     let file = $("#fileField")[0]
     // let file =document.getElementById("fileField").files[0]
-    console.log(file.files[0])
+   browserType.extension.getBackgroundPage().console.log(file.files[0])
     let reader = new FileReader()
     reader.readAsText(file.files[0])
     reader.onload = (myFile) => {
-        // console.log(myFile.target.result)
+        //browserType.extension.getBackgroundPage().console.log(myFile.target.result)
         let ob = JSON.parse(myFile.target.result)
-        console.log(ob[1])
+       browserType.extension.getBackgroundPage().console.log(ob[1])
     }
 }
 
@@ -60,15 +61,15 @@ function output(htmlString){
     if ($("span").hasClass("thumbnail")) {
         $(".videoList").empty()
         $(".videoList").append(htmlString)
-        console.log("clean up and append")
+       browserType.extension.getBackgroundPage().console.log("clean up and append")
     } else {
         $(".videoList").append(htmlString)
-        console.log("directly append")
+       browserType.extension.getBackgroundPage().console.log("directly append")
     }
 }
 
 function handleReload() {
-    console.log("reloading...")
+   browserType.extension.getBackgroundPage().console.log("reloading...")
     output(debugHtmlSnippet("reloading..."))
     storageLocalGet("list_vedio").then((o) => {
         if (o.list_vedio !== undefined && o.list_vedio.length > 0) {
@@ -86,8 +87,8 @@ $(document).ready(function () {
         browserType.runtime.openOptionsPage()
     })
     $("#update").on("click", function () {
-        console.log("click update")
-        console.log($(".videoList").attr("status"));
+        browserType.extension.getBackgroundPage().console.log("click update")
+        browserType.extension.getBackgroundPage().console.log($(".videoList").attr("status"));
         if($(".videoList").attr("status") == "updated"){
 
             $(".videoList").attr("status","updating");
@@ -106,7 +107,8 @@ $(document).ready(function () {
     // $("#reload").on("click", handleReload)
     handleReload()
     browserType.runtime.onMessage.addListener((ms) => {
-        console.log(ms)
+        //browserType.extension.getBackgroundPage().console.log(ms)
+        
         if (ms.debugOutput !== undefined) {
             output(debugHtmlSnippet(ms.debugOutput))
         } else if (ms.updateComplete !== undefined) {
