@@ -2,9 +2,9 @@ let browserInfo=getBrowserInfo()
 let browserType
 if(browserInfo["name"]=="Firefox"){
     browserType=browser;
-    
 }else if(browserInfo["name"]=="Chrome"){
     browserType=chrome;
+    // browserType.extension.getBackgroundPage().console.log(Number(browserInfo["version"].split(".",1)[0])) 
 }else{
 	browserType=browser;
 }
@@ -83,6 +83,17 @@ function handleReload() {
     })
 }
 $(document).ready(function () {
+
+    // 判断版本
+    if(Number(browserInfo["version"].split(".",1)[0]) > 62){
+        // 版本符合
+        // browserType.extension.getBackgroundPage().console.log($("#version-warning").text())
+        
+    }else{
+        // 版本过低
+        $("#version-warning").text("Please update your Chrome. We need version > 62. Current version:"+browserInfo["version"])
+    }
+
     $("#settings").on("click", function () {
         browserType.runtime.openOptionsPage()
     })
