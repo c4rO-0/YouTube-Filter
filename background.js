@@ -1,3 +1,14 @@
+//<---- first run--->
+let browserInfo = getBrowserInfo()
+let browserType
+if (browserInfo["name"] == "Firefox") {
+	browserType = browser;
+} else if (browserInfo["name"] == "Chrome") {
+	browserType = chrome;
+} else {
+	browserType = browser;
+}
+
 
 // 对infoVideo数组中,视频更新顺序进行排序. 从新到旧
 function videoMergeSort(array) {  //采用自上而下的递归方法
@@ -20,23 +31,13 @@ function merge(left, right) { //合并两个子数组
 }
 //for debug
 function popUpNotification(message) {
-	browser.notifications.create({
+	browserType.notifications.create({
 		"type": "basic",
 		"title": "Hey boy",
 		"message": message
 	});
 }
-//for debug
-function checkResponse(xhr) {
-	// console.log(xhr.response)
-	// console.log(xhr.getResponseHeader("Content-Type"))
-	let blobFile = new Blob([xhr.response], { type: "text/html;charset=UTF-8" })
-	// var blobFile = new Blob([xmlHttp.response], { type: "text/plain;charset=UTF-8" })
-	let blobUrl = URL.createObjectURL(blobFile)
-	let creating = browser.tabs.create({
-		url: blobUrl
-	})
-}
+
 // 根据关键字列表索取youtube页面
 function searchListOnline(list) {
 	let url;
@@ -75,7 +76,7 @@ function searchListOnline(list) {
 		list_p[i].then(() => {
 			let max_strOut = 10;
 			let strOut = "searching : ";
-			// browser.runtime.sendMessage({ debugOutput: "searching" })
+			//runtimeSendMessage({ debugOutput: "searching" })
 			if (list[i].self.join(' ').length + list[i].playList.length > max_strOut) {
 				strOut += (list[i].self.join(' ') + list[i].playList).substring(0, max_strOut) + "...";
 			} else {
@@ -87,7 +88,7 @@ function searchListOnline(list) {
 			} else {
 				strOut += list[i].channel
 			}
-			browser.runtime.sendMessage({ debugOutput: strOut })
+			runtimeSendMessage({ debugOutput: strOut })
 		})
 	}
 	return Promise.all(list_p);
@@ -351,12 +352,14 @@ function filterPlayListSearch(list_Keyword, list_SearchResults) {
 				if (list_Keyword[i].channel == '') {
 					vInfo = getPlayListInfo(doc.find('[id*=item-section-]').children()[0]);
 					list_vInfo.push(vInfo);
-				}else{
+				} else {
 					doc.find('li.feed-item-container.yt-section-hover-container.browse-list-item-container.branded-page-box').each(function (index) {
-						if(list_vInfo.length < 1){
+						if (list_vInfo.length < 1) {
+
 							vInfo = getPlayListInfo(this);
-							if(vInfo.videoUrl.includes("/playlist?list="))
-							list_vInfo.push(vInfo);
+							if (vInfo.videoUrl.includes("/playlist?list="))
+								list_vInfo.push(vInfo);
+
 						}
 					})
 				}
@@ -384,11 +387,11 @@ function initialUrl(key_word) {
 					console.log("start initialize playlist");
 					vedio = [];
 					key_word_local.playList = key_word.playList;
-					if(key_word.playListUrl != ""){
+					if (key_word.playListUrl != "") {
 						console.log("playlist url 已存在");
 						console.log("-------------->");
 						resolve(key_word)
-					}else{
+					} else {
 						searchListOnline([key_word_local]).then((list_SearchResults) => {
 							if (key_word.playList != "" && key_word.playListUrl == "") {
 								console.log("查找play list");
@@ -413,13 +416,13 @@ function initialUrl(key_word) {
 						}).catch((error) => {
 							// 未知错误
 							console.log(error)
-							browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+							runtimeSendMessage({ debugOutput: "error when checking channel url" })
 							key_word.onOff = false
 							resolve(key_word)
 							reject("error when initializing " + key_word.self)
 						});
 					}
-				}else{
+				} else {
 					resolve(key_word)
 				}
 			} else {
@@ -454,11 +457,11 @@ function initialUrl(key_word) {
 						console.log("start initialize playlist");
 						vedio = [];
 						key_word_local.playList = key_word.playList;
-						if(key_word.playListUrl != ""){
+						if (key_word.playListUrl != "") {
 							console.log("playlist url 已存在");
 							console.log("-------------->");
 							resolve(key_word)
-						}else{
+						} else {
 							searchListOnline([key_word_local]).then((list_SearchResults) => {
 								if (key_word.playList != "" && key_word.playListUrl == "") {
 									console.log("查找play list");
@@ -483,13 +486,13 @@ function initialUrl(key_word) {
 							}).catch((error) => {
 								// 未知错误
 								console.log(error)
-								browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+								runtimeSendMessage({ debugOutput: "error when checking channel url" })
 								key_word.onOff = false
 								resolve(key_word)
 								reject("error when initializing " + key_word.self)
 							});
 						}
-					}else{
+					} else {
 						resolve(key_word)
 					}
 				})
@@ -498,14 +501,14 @@ function initialUrl(key_word) {
 			// 不需要查找url
 			console.log("不需要初始化url");
 			resolve(key_word)
-		}else if (key_word.playList != "") {
+		} else if (key_word.playList != "") {
 			vedio = [];
 			key_word_local.playList = key_word.playList;
-			if(key_word.playListUrl != ""){
+			if (key_word.playListUrl != "") {
 				console.log("playlist url 已存在");
 				console.log("-------------->");
 				resolve(key_word)
-			}else{
+			} else {
 				searchListOnline([key_word_local]).then((list_SearchResults) => {
 					if (key_word.playList != "" && key_word.playListUrl == "") {
 						console.log("查找play list");
@@ -531,11 +534,11 @@ function initialUrl(key_word) {
 						resolve(key_word)
 						reject("error when initializing " + key_word.self)
 					}
-					
+
 				}).catch((error) => {
 					// 未知错误
 					console.log(error)
-					browser.runtime.sendMessage({ debugOutput: "error when checking channel url" })
+					runtimeSendMessage({ debugOutput: "error when checking channel url" })
 					key_word.onOff = false
 					resolve(key_word)
 					reject("error when initializing " + key_word.self)
@@ -555,26 +558,27 @@ function initialUrl(key_word) {
 // 查找关键词对应的视频
 function updateSearchList(list_KeyWord) {
 	// 筛选出符合关键词的视频
-	browser.runtime.sendMessage({ debugOutput: "updating..." })
+	console.log("start update search list");
+	runtimeSendMessage({ debugOutput: "updating..." })
 	let list_vedio = new Array();
 	let list_KeyWord_local = new Array();
-	
-	for (let i = 0; i < list_KeyWord.length; i++){
 
-		if(list_KeyWord[i].channel != "" && list_KeyWord[i].channelUrl != ""){
-			if(list_KeyWord[i].playList != "" && list_KeyWord[i].playListUrl!= ""){
+	for (let i = 0; i < list_KeyWord.length; i++) {
+
+		if (list_KeyWord[i].channel != "" && list_KeyWord[i].channelUrl != "") {
+			if (list_KeyWord[i].playList != "" && list_KeyWord[i].playListUrl != "") {
 				list_KeyWord_local.push(list_KeyWord[i]);
-			}else if(list_KeyWord[i].playList == ""){
-				if(list_KeyWord[i].self.join('') != ""){
+			} else if (list_KeyWord[i].playList == "") {
+				if (list_KeyWord[i].self.join('') != "") {
 					list_KeyWord_local.push(list_KeyWord[i]);
 				}
-				
+
 			}
-		}else if(list_KeyWord[i].channel == ""){
-			if(list_KeyWord[i].playList != "" ){
+		} else if (list_KeyWord[i].channel == "") {
+			if (list_KeyWord[i].playList != "") {
 				//playlist一定会有channel
-			}else if(list_KeyWord[i].playList == ""){
-				if(list_KeyWord[i].self.join('') != ""){
+			} else if (list_KeyWord[i].playList == "") {
+				if (list_KeyWord[i].self.join('') != "") {
 					list_KeyWord_local.push(list_KeyWord[i]);
 				}
 			}
@@ -585,7 +589,11 @@ function updateSearchList(list_KeyWord) {
 		list_vedio.push.apply(list_vedio, filterSearch(list_KeyWord_local, list_SearchResults));
 		return searchPlayListOnline(list_KeyWord_local);
 	}).then((list_Playlistmainpage) => {
-		browser.runtime.sendMessage({ debugOutput: "got " + list_vedio.length + " video(s)" })
+		//console.log("final:");
+		console.log("num video : ", list_vedio.length);
+		console.log(list_Playlistmainpage.length);
+		runtimeSendMessage({ debugOutput: "got " + list_vedio.length + " video(s)" })
+
 		// 或得playList更新时间
 		for (let i = 0; i < list_KeyWord_local.length; i++) {
 			if (list_KeyWord_local[i].playList != "") {
@@ -597,15 +605,22 @@ function updateSearchList(list_KeyWord) {
 			}
 		}
 		list_vedio = videoMergeSort(list_vedio);
-		let storageVideo = browser.storage.local.set({ list_vedio });
+
+		// debug
+		for (let i = 0; i < list_vedio.length; i++) {
+			console.log("<-----" + i + "-th video----->");
+			list_vedio[i].show();
+		}
+		//let  storageVideo = browserType.storage.local.set({ObjListVideo:{list_vedio}});
+		let storageVideo = storageLocalSet({ list_vedio });
 		storageVideo.then(() => {
-			browser.runtime.sendMessage({ updateComplete: "update complete" })
+			runtimeSendMessage({ updateComplete: "update complete" })
 		})
 	});
 }
 
 function updateActivatedList() {
-	browser.storage.local.get("list_KeyWord").then((o) => {
+	storageLocalGet("list_KeyWord").then((o) => {
 		let activatedList = new Array()
 		for (let i = 0; i < o.list_KeyWord.length; i++) {
 			if (o.list_KeyWord[i].onOff) {
@@ -632,7 +647,8 @@ numOfQueueHttp = 0;
 
 // 自动更新视频列表
 function initialAllUrl() {
-	browser.storage.local.get("list_KeyWord").then((o) => {
+
+	storageLocalGet("list_KeyWord").then((o) => {
 		let listPromise = new Array()
 		if (o.list_KeyWord !== undefined) {
 			for (let i = 0; i < o.list_KeyWord.length; i++) {
@@ -642,17 +658,21 @@ function initialAllUrl() {
 				}
 			}
 			Promise.all(listPromise).then((list) => {
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
+				runtimeSendMessage({ debugOutput: "finish initialization" })
 			})
 		}
+
 	})
 }
 
 
 function updateSearchListIterator(timeGap) {
 	// 如果list_KeyWord更新了,这里list_KeyWord是否也会更新?
-	browser.storage.local.get("list_KeyWord").then((o) => {
+	var Now = new Date();
+	console.log("updat time : ", Now);
+	// updateSearchList(list_KeyWord);
+	storageLocalGet("list_KeyWord").then((o) => {
 
 		if (o.list_KeyWord !== undefined) {
 			let activatedList = new Array()
@@ -668,7 +688,19 @@ function updateSearchListIterator(timeGap) {
 
 }
 
+
+
+//测试 storage 和set
+// storageLocalClear()
+// storageLocalSet( {"list_KeyWord": [1,2,3]} )
+// storageLocalGet("list_KeyWord").then((o)=>{
+// 	console.log(o)
+// })
+
+//初始化化
 initialAllUrl()
+
+
 let timeGap = 60 * 60 * 1000; // 60 min
 setTimeout(() => {
 	updateSearchListIterator(timeGap);
@@ -677,15 +709,17 @@ setTimeout(() => {
 
 function handleTabUpdate(tabId, changeInfo, tabInfo) {
 	if (String(changeInfo.url).includes("https://www.youtube.com/feed/subscriptions")) {
-		browser.tabs.query({
+		console.log("Tab: " + tabId + " URL changed to " + changeInfo.url);
+		console.log(changeInfo)
+		browserType.tabs.query({
 			url: "*://*.youtube.com/feed/subscription*"
 		}).then((tabs) => {
 			for (let tab of tabs) {
-				browser.tabs.reload(tab.Id)
+				browserType.tabs.reload(tab.Id)
 			}
-			browser.tabs.onUpdated.removeListener(handleTabUpdate)
+			browserType.tabs.onUpdated.removeListener(handleTabUpdate)
 
-			setTimeout(() => { browser.tabs.onUpdated.addListener(handleTabUpdate) }, 30000)
+			setTimeout(() => { browserType.tabs.onUpdated.addListener(handleTabUpdate) }, 30000)
 
 		}).catch((error) => { console.log(`Error:${error}`) })
 	}
@@ -693,7 +727,7 @@ function handleTabUpdate(tabId, changeInfo, tabInfo) {
 
 function sendMessageToTabs(tabs) {
 	for (let tab of tabs) {
-		browser.tabs.sendMessage(
+		browserType.tabs.sendMessage(
 			tab.id,
 			{ greeting: "Hi from background script" }
 		).then(response => {
@@ -703,37 +737,64 @@ function sendMessageToTabs(tabs) {
 
 function handleTabUpdate(tabId, changeInfo, tabInfo) {
 	if (String(changeInfo.url).includes("https://www.youtube.com/feed/subscriptions")) {
-		browser.tabs.query({
+		console.log("Tab: " + tabId + " URL changed to " + changeInfo.url);
+		console.log(changeInfo)
+		browserType.tabs.query({
 			active: true,
 			lastFocusedWindow: true,
 			url: "*://*.youtube.com/feed/subscription*"
 		}).then((tabs) => {
 			sendMessageToTabs(tabs);
-		}).catch((error) => { console.log(`browser.tabs.query :${error}`) })
+		}).catch((error) => { console.log(`browserType.tabs.query :${error}`) })
 	}
 }
-browser.tabs.onUpdated.addListener(handleTabUpdate);
+browserType.tabs.onUpdated.addListener(handleTabUpdate);
 
 
-browser.browserAction.onClicked.addListener(() => {
-	browser.storage.local.get("list_KeyWord").then((o) => {
+browserType.browserAction.onClicked.addListener(() => {
+	// browserType.runtime.openOptionsPage()
+
+	storageLocalGet("list_KeyWord").then((o) => {
 		if (o.list_KeyWord !== undefined) {
 			updateSearchList(o.list_KeyWord);
 		}
 	})
+
 })
 
-browser.runtime.onMessage.addListener((ms) => {
+browserType.webRequest.onBeforeSendHeaders.addListener(
+	function (details) {
+		// console.log(details)
+		// console.log(chrome.runtime.id)
+		if (details.initiator !== undefined && details.initiator.includes(browserType.runtime.id)) {
+			// console.log("this is from our add-on")
+			for (let i = 0; i < details.requestHeaders.length; i++) {
+				if (details.requestHeaders[i].name === 'User-Agent') {
+					details.requestHeaders[i].value = 'Mozilla/5.0 (Windows NT 5.1; rv:37.0) Gecko/20100101 Firefox/37.0'
+					break;
+				}
+			}
+		}
+		return { requestHeaders: details.requestHeaders }
+	},
+	{ urls: ["*://www.youtube.com/*"] },
+	['requestHeaders', 'blocking']
+)
+
+browserType.runtime.onMessage.addListener((ms) => {
+	// console.log(ms)
 	if (ms.idxToBeInit !== undefined) {
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		// console.log("initializing one")
+		storageLocalGet("list_KeyWord").then((o) => {
 			initialUrl(o.list_KeyWord[ms.idxToBeInit]).then((initializedKeyword) => {
 				o.list_KeyWord[ms.idxToBeInit] = initializedKeyword
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
+				runtimeSendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.topFewToBeInit !== undefined) {
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		// console.log("initializing few")
+		storageLocalGet("list_KeyWord").then((o) => {
 			let promiseArray = new Array()
 			for (let i = 0; i < ms.topFewToBeInit; i++) {
 				if (o.list_KeyWord[i].onOff) {
@@ -741,12 +802,12 @@ browser.runtime.onMessage.addListener((ms) => {
 				}
 			}
 			Promise.all(promiseArray).then((list) => {
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
+				runtimeSendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.bottomFewToBeInit !== undefined) {
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		storageLocalGet("list_KeyWord").then((o) => {
 			let promiseArray = new Array()
 			for (let i = 0; i < ms.bottomFewToBeInit; i++) {
 				if (o.list_KeyWord[o.list_KeyWord.length - 1 - i].onOff) {
@@ -754,12 +815,15 @@ browser.runtime.onMessage.addListener((ms) => {
 				}
 			}
 			Promise.all(promiseArray).then((list) => {
-				browser.storage.local.set({ list_KeyWord: o.list_KeyWord })
-				browser.runtime.sendMessage({ debugOutput: "finish initialization" })
+
+				storageLocalSet({ list_KeyWord: o.list_KeyWord })
+				runtimeSendMessage({ debugOutput: "finish initialization" })
 			})
 		})
 	} else if (ms.updateAll == true) {
-		browser.storage.local.get("list_KeyWord").then((o) => {
+		console.log("got it, updating...")
+		storageLocalGet("list_KeyWord").then((o) => {
+			// updateSearchList(o.list_KeyWord)
 			updateActivatedList()
 		})
 	}

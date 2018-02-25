@@ -74,33 +74,75 @@
 		<button id="DialogOK">OK</button>
 	</div>
 	<div class="row" id="dlHelp">
-		<h3>Keyword example:</h3>
-		<p class="help">
-			keyword1<b>,</b> keyword2<b>,</b> keyword3<b>;</b> channel name
-		</p>
-		<h4>Rules:</h4>
-		<ul>
-			<li>Search results will match all keywords</li>
-			<li>Every entry should have at least one keyword</li>
-			<li>Every entry should have channel name, except it is a playlist</li>
-			<li>Separate multiple keywords with comma(<b>,</b>)</li>
-			<li>Separate keywords and channel name with colon(<b>;</b>)</li>
-			<li>Prefix comma and colon (<b>,;</b>) with backslash(<b>\</b>), if your keywords contain them i.e. key<b>\,</b>word1 NOT key<b>,</b>word1.</li>
-		</ul>
-		<h5>Tips</h5>
-		<ul>
-			<li>Double click on keywords can toggle editing</li>
-			<li>Drag to sort</li>
-			<li>Invalid channel name will turn off that entry, so check your spell and turn it on manually</li>
-			<li>In order to Import your Playlist, please stay logged in YouTube</li>
-			<li>For performance considerations, up to 10 entries are allowed, the excesses will be turned off</li>
-		</ul>
-		<h3>More Information</h3>
-		<p class="help">
-			<a href="https://github.com/c4rO-0/YouTube-Filter/wiki/主页">中文</a> | <a href="https://github.com/c4rO-0/YouTube-Filter/wiki">English</a>
-		</p>
+		<label id="helpToCH">中文</label>|
+		<label id="helpToEN">English</label>
+		<div id="helpEN" style="display:none">
+			<h3>Keyword example:</h3>
+			<p class="help">
+				keyword1<b>,</b> keyword2<b>,</b> keyword3<b>;</b> channel name
+			</p>
+			<h4>Rules:</h4>
+			<ul>
+				<li>Search results will match all keywords</li>
+				<li>Every entry should have at least one keyword</li>
+				<li>Every entry should have channel name, except it is a playlist</li>
+				<li>Separate multiple keywords with comma(<b>,</b>)</li>
+				<li>Separate keywords and channel name with colon(<b>;</b>)</li>
+				<li>Prefix comma and colon (<b>,;</b>) with backslash(<b>\</b>), if your keywords contain them i.e. key<b>\,</b>word1 NOT key<b>,</b>word1.</li>
+			</ul>
+			<h4>Tips</h4>
+			<ul>
+				<li>Double click on keywords can toggle editing</li>
+				<li>Drag to sort</li>
+				<li>If you find your entry not worked, use YouTube search to correct your entry</li>
+				<li>In order to Import your Playlist, please stay logged in YouTube</li>
+				<li>For performance considerations, up to 10 entries are allowed, the excesses will be turned off</li>
+			</ul>
+			<h3>More Information</h3>
+			<p class="help">
+					<a href="https://github.com/c4rO-0/YouTube-Filter/issues">Issues</a>
+			</p>	
+		</div>
+		<!-- 中文版 -->
+		<div id="helpCH">
+			<h3>添加关键词例子:</h3>
+			<p class="help">
+				关键词1<b>,</b> 关键词2<b>,</b> 关键词3<b>;</b>频道名称
+			</p>
+			<h4>规则</h4>
+			<ul>
+				<li>关键词使用逗号(<b>,</b>)分隔, 注意是<b>英文逗号</b>(半角)</li>
+				<li>关键词和频道使用分号(<b>;</b>)分隔, 注意使用<b>英文分号</b>(半角)</li>
+				<li>搜索结果会匹配所有关键词,至少要有一个关键词</li>
+				<li>最好可以添加频道名字,可以匹配的更精准</li>
+				<li>如果需要逗号或分号 (<b>,;</b>) 请使用反斜线(<b>\</b>), 比如`关键<b>\,</b>词1`而不是`关键<b>,</b>词1`</li>
+			</ul>
+			<h4>贴士</h4>
+			<ul>
+				<li>双击已存在关键词可以再次编辑</li>
+				<li>点住关键词可以进行拖拽</li>
+				<li>如果搜索结果不理想，可以去Youtube搜索栏中手动检验该关键词</li>
+				<li>导入YouTube的播放列表,需要您的YouTube处于登录状态</li>
+				<li>为了保证插件的顺利运行,目前只允许最多10个关键词条,多余的将会被自动关闭</li>
+			</ul>
+			<h3>更多信息</h3>
+			<p class="help">
+				<a href="https://github.com/c4rO-0/YouTube-Filter/issues">反馈</a>
+			</p>	
+		</div>
 	</div>
 
+
+	<!-- 捐赠按钮 -->
+	<!-- 
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="hosted_button_id" value="GFW9CHDJQYZSE">
+		<input type="image" src="https://www.paypalobjects.com/zh_XC/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal——最安全便捷的在线支付方式！">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		</form>
+	-->
+	<!-- 捐赠按钮结束 -->
 </body>
 
 </html>

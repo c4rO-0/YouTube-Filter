@@ -1,10 +1,19 @@
 # Youtube Filter
 [中文](https://github.com/c4rO-0/YouTube-Filter/blob/master/README.md) | [English](https://github.com/c4rO-0/YouTube-Filter/blob/master/README_en.md)
 
-通过该火狐浏览器插件可以利用关键词查询视频更新状态
+通过该火狐浏览器插件可以利用关键词查询视频更新状态. 
+
+追剧神器.
+[点我获取插件](https://addons.mozilla.org/zh-CN/firefox/addon/youtube-filter-c4r/)
+
+添加关键字
 
 ![](https://media.giphy.com/media/3ohs4dmQK9B9GCnNFC/giphy.gif)
+
+查看视频
+
 ![](https://media.giphy.com/media/l4pTdjCrc7h0OxFPG/giphy.gif)
+
 ## 导向
 
 - 开发者 [本页面](https://github.com/c4rO-0/YouTube-Filter)
@@ -12,21 +21,32 @@
 - 用户反馈 [反馈页面](https://github.com/c4rO-0/YouTube-Filter/issues)
 
 ## 源码安装
-- 在[本项目git主页面](https://github.com/c4rO-0/YouTube-Filter)选择`clone or download`获取下载链接. 将源码保存在本地.
-- 打开火狐浏览器,在地址栏输入`about:debugging`打开`附加组件`页面.
-- 点击`附加组件`页面右上角`临时载入附加组件`按钮. 找到本地源码,选择`manifest.json`文件.
+- 在[本项目release页面](https://github.com/c4rO-0/YouTube-Filter/releases)选择beta版进行下载。目前最新为b.1.0.0。
+- 打开火狐浏览器,在地址栏输入`about:debugging`打开`附加组件`页面
+- 点击`附加组件`页面右上角`临时载入附加组件`按钮
+- 在解压后的文件夹中选择`manifest.json`文件
+
+[参考](https://youtu.be/cer9EUKegG4)
 
 ## 插件介绍
 本插件使用javascript开发. 总共分为5部分.
 
-**内核(core)** : 储存公用函数.
+**库(lib)** : 包含公共类，函数，及jQuery
 
-**设置页面(settings)** : 设置页面的脚本和html.
+**设置页面(settings)** : 添加或修改关键词
 
 **后台运行(background)** : 查询网址, 过滤等指令执行的地方.
 
-**content** : 在youtube订阅页面执行的脚本.
+**页面脚本(content)** : 在youtube订阅页面执行的脚本，用于展示结果（未完成）
 
-**图标弹窗(popup)** : 
+**图标弹窗(popup)** : 弹出窗口显示结果
 
+## 版本更新
+
+### a1.1.0 
+- 修改框架,可以兼容Chrome
+
+### a1.1.1
+- 添加多语言
+- 修改默认语言为中文
 

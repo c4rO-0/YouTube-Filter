@@ -1,0 +1,10 @@
+{
+    "appName": {
+      "message": "YouTube Filter",
+      "description": "To keep updated about your concerned videos on Youtube by specific keywords provided."
+    },
+    "appDesc": {
+      "message": "To keep updated about your concerned videos on Youtube by specific keywords provided.", 
+      "description":"To keep updated about your concerned videos on Youtube by specific keywords provided."
+    }
+  }
