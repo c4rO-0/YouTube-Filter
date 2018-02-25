@@ -85,13 +85,15 @@ function handleReload() {
 $(document).ready(function () {
 
     // 判断版本
-    if(Number(browserInfo["version"].split(".",1)[0]) > 62){
-        // 版本符合
-        // browserType.extension.getBackgroundPage().console.log($("#version-warning").text())
-        
-    }else{
-        // 版本过低
-        $("#version-warning").text("Please update your Chrome. We need version > 62. Current version:"+browserInfo["version"])
+    if(browserInfo["name"] == "Chrome"){
+        if(Number(browserInfo["version"].split(".",1)[0]) > 62){
+            // 版本符合
+            // browserType.extension.getBackgroundPage().console.log($("#version-warning").text())
+            
+        }else{
+            // 版本过低
+            $("#version-warning").text("Please update your Chrome. We need version > 62. Current version:"+browserInfo["version"])
+        }
     }
 
     $("#settings").on("click", function () {
