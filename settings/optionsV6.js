@@ -690,6 +690,14 @@ $(document).ready(function () {
     $("#Export").on("click", handleExport)
     $("#Import").on("click", function () { $("#flImport").click() })
     $("#flImport").on("change", handleImport)
+    $("#helpToCH").on("click",function(){
+        $("#helpCH").css("display","inline")
+        $("#helpEN").css("display","none")
+    })
+    $("#helpToEN").on("click",function(){
+        $("#helpCH").css("display","none")
+        $("#helpEN").css("display","inline")
+    })
 
     loadSetting()
 

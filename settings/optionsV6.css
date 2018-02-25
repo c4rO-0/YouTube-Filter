@@ -228,6 +228,14 @@ ul .liDialog .spDialog {
 #dlHelp .help {
 	text-indent: 2pc;
 }
+#dlHelp #helpToCH {
+	cursor: pointer;
+}
+#dlHelp #helpToEN {
+	cursor: pointer;
+}
+
+
 
 
 
