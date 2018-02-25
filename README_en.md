@@ -35,3 +35,12 @@ this add-on is developed in javascript, includes 5 parts
 **background**: search keywords  
 **content**: run on youtube subscription page, to display results.(unfinished)  
 **popup**: popup a window to display results  
+
+## version updated
+
+### a1.1.0 
+- change frame to fit Chrome
+
+### a1.1.1
+- add multi-language 
+- use ZH as default language
