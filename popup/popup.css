@@ -9,7 +9,7 @@
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", Verdana, sans-serif;
 }
 .row .col {
-	/* [disabled]max-width: 426px; */
+	max-width: 300px;
 
 }
 
@@ -30,6 +30,7 @@
 	padding: 0;
 	border: 0;
 	margin: 0;
+	max-width: 252px;
 }
 a {
 	text-decoration: none;
@@ -37,11 +38,11 @@ a {
 a h3 .video-title {
 	overflow: hidden;
 	display: block;
-	max-height: 2.5rem;
-	font-size: 1.1rem;
+	max-height: 37px;
+	font-size: 16px;
 	font-weight: 500;
 	margin: 0 0 4px 0;
-	line-height: 1.3rem;
+	line-height: 19px;
 	padding: 0;
 	border: 0;
 	font-family: Roboto,Arial,sans-serif;
@@ -49,11 +50,12 @@ a h3 .video-title {
 
 a .metadata .byline {
 	overflow-x: hidden;
+	overflow-y: hidden;
 	white-space: nowrap;
 	display: flex;
-	font-size: 0.9rem;
+	font-size: 13px;
 	font-weight: 400;
-	line-height: 1.2rem;
+	line-height: 17px;
 	text-transform: none;
 	text-overflow: ellipsis;
 	color: rgba(100,100,100,1.00);
@@ -62,8 +64,8 @@ a .metadata .metadate-line {
 	padding: 0;
 	border: 0;
 	margin: 0;
-	line-height: 1.1rem;
-	font-size: 0.9rem;
+	line-height: 16px;
+	font-size: 13px;
 	font-weight: 400;
 	text-transform: none;
 	color: rgba(100,100,100,1.00);

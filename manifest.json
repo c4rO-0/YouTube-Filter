@@ -31,14 +31,10 @@
         "open_in_tab": true
     },
     "permissions": [
-        "notifications",
         "*://*.youtube.com/*",
         "webRequest",
         "webRequestBlocking",
-        "<all_urls>",
         "storage",
-        "tabs",
-        "webNavigation",
         "downloads"
     ],
     "author": "c4r"

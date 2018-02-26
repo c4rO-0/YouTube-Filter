@@ -589,9 +589,6 @@ function updateSearchList(list_KeyWord) {
 		list_vedio.push.apply(list_vedio, filterSearch(list_KeyWord_local, list_SearchResults));
 		return searchPlayListOnline(list_KeyWord_local);
 	}).then((list_Playlistmainpage) => {
-		//console.log("final:");
-		console.log("num video : ", list_vedio.length);
-		console.log(list_Playlistmainpage.length);
 		runtimeSendMessage({ debugOutput: "got " + list_vedio.length + " video(s)" })
 
 		// 或得playList更新时间
@@ -606,12 +603,6 @@ function updateSearchList(list_KeyWord) {
 		}
 		list_vedio = videoMergeSort(list_vedio);
 
-		// debug
-		for (let i = 0; i < list_vedio.length; i++) {
-			console.log("<-----" + i + "-th video----->");
-			list_vedio[i].show();
-		}
-		//let  storageVideo = browserType.storage.local.set({ObjListVideo:{list_vedio}});
 		let storageVideo = storageLocalSet({ list_vedio });
 		storageVideo.then(() => {
 			runtimeSendMessage({ updateComplete: "update complete" })
@@ -669,9 +660,6 @@ function initialAllUrl() {
 
 function updateSearchListIterator(timeGap) {
 	// 如果list_KeyWord更新了,这里list_KeyWord是否也会更新?
-	var Now = new Date();
-	console.log("updat time : ", Now);
-	// updateSearchList(list_KeyWord);
 	storageLocalGet("list_KeyWord").then((o) => {
 
 		if (o.list_KeyWord !== undefined) {
@@ -687,15 +675,6 @@ function updateSearchListIterator(timeGap) {
 	setTimeout(() => { updateSearchListIterator(timeGap) }, timeGap)
 
 }
-
-
-
-//测试 storage 和set
-// storageLocalClear()
-// storageLocalSet( {"list_KeyWord": [1,2,3]} )
-// storageLocalGet("list_KeyWord").then((o)=>{
-// 	console.log(o)
-// })
 
 //初始化化
 initialAllUrl()
@@ -737,8 +716,6 @@ function sendMessageToTabs(tabs) {
 
 function handleTabUpdate(tabId, changeInfo, tabInfo) {
 	if (String(changeInfo.url).includes("https://www.youtube.com/feed/subscriptions")) {
-		console.log("Tab: " + tabId + " URL changed to " + changeInfo.url);
-		console.log(changeInfo)
 		browserType.tabs.query({
 			active: true,
 			lastFocusedWindow: true,
@@ -752,22 +729,16 @@ browserType.tabs.onUpdated.addListener(handleTabUpdate);
 
 
 browserType.browserAction.onClicked.addListener(() => {
-	// browserType.runtime.openOptionsPage()
-
 	storageLocalGet("list_KeyWord").then((o) => {
 		if (o.list_KeyWord !== undefined) {
 			updateSearchList(o.list_KeyWord);
 		}
 	})
-
 })
 
 browserType.webRequest.onBeforeSendHeaders.addListener(
 	function (details) {
-		// console.log(details)
-		// console.log(chrome.runtime.id)
 		if (details.initiator !== undefined && details.initiator.includes(browserType.runtime.id)) {
-			// console.log("this is from our add-on")
 			for (let i = 0; i < details.requestHeaders.length; i++) {
 				if (details.requestHeaders[i].name === 'User-Agent') {
 					details.requestHeaders[i].value = 'Mozilla/5.0 (Windows NT 5.1; rv:37.0) Gecko/20100101 Firefox/37.0'
@@ -782,9 +753,7 @@ browserType.webRequest.onBeforeSendHeaders.addListener(
 )
 
 browserType.runtime.onMessage.addListener((ms) => {
-	// console.log(ms)
 	if (ms.idxToBeInit !== undefined) {
-		// console.log("initializing one")
 		storageLocalGet("list_KeyWord").then((o) => {
 			initialUrl(o.list_KeyWord[ms.idxToBeInit]).then((initializedKeyword) => {
 				o.list_KeyWord[ms.idxToBeInit] = initializedKeyword
@@ -793,7 +762,6 @@ browserType.runtime.onMessage.addListener((ms) => {
 			})
 		})
 	} else if (ms.topFewToBeInit !== undefined) {
-		// console.log("initializing few")
 		storageLocalGet("list_KeyWord").then((o) => {
 			let promiseArray = new Array()
 			for (let i = 0; i < ms.topFewToBeInit; i++) {
@@ -823,7 +791,6 @@ browserType.runtime.onMessage.addListener((ms) => {
 	} else if (ms.updateAll == true) {
 		console.log("got it, updating...")
 		storageLocalGet("list_KeyWord").then((o) => {
-			// updateSearchList(o.list_KeyWord)
 			updateActivatedList()
 		})
 	}

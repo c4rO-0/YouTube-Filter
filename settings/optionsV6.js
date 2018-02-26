@@ -91,14 +91,12 @@ function handleOnoff() {
             last = idx
         }
     })
-    // console.log(offList)
 
     let save = storageLocalGet("list_KeyWord").then((o) => {
         o.list_KeyWord[index].onOff = isThisChecked
         for (let i = 0; i < offList.length; i++) {
             o.list_KeyWord[offList[i]].onOff = false
         }
-        // console.log(o.list_KeyWord)
         return storageLocalSet({ list_KeyWord: o.list_KeyWord })
     })
     if (isThisChecked) {
@@ -117,8 +115,6 @@ function handleTextfieldChange() {
     $(this).next().text(shortOutput)
     $(this).next().prop("longOutput", longOutput)
     let index = $(this).closest(".liKeyword").index()
-    //send this message
-    // labelToKeyword(index)
     storageLocalGet("list_KeyWord").then((o) => {
         o.list_KeyWord[index] = labelToKeyword(index)
         return storageLocalSet({ list_KeyWord: o.list_KeyWord })
@@ -241,7 +237,6 @@ function handleAdd() {
     $("#ulKeyword .liKeyword:visible").each(function (idx, elm) {
         $(this).prop("id", idx)
     })
-    // save()
     storageLocalGet("list_KeyWord").then((o) => {
         if (o.list_KeyWord === undefined) {
             return storageLocalSet({ list_KeyWord: [labelToKeyword(0)] })

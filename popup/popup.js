@@ -4,23 +4,17 @@ if(browserInfo["name"]=="Firefox"){
     browserType=browser;
 }else if(browserInfo["name"]=="Chrome"){
     browserType=chrome;
-    // browserType.extension.getBackgroundPage().console.log(Number(browserInfo["version"].split(".",1)[0])) 
 }else{
 	browserType=browser;
 }
 
 
 function handleFile() {
-   browserType.extension.getBackgroundPage().console.log("got a file")
-   browserType.extension.getBackgroundPage().console.log($("#fileField"))
     let file = $("#fileField")[0]
-    // let file =document.getElementById("fileField").files[0]
-   browserType.extension.getBackgroundPage().console.log(file.files[0])
     let reader = new FileReader()
     reader.readAsText(file.files[0])
     reader.onload = (myFile) => {
         let ob = JSON.parse(myFile.target.result)
-       browserType.extension.getBackgroundPage().console.log(ob[1])
     }
 }
 
@@ -60,10 +54,8 @@ function output(htmlString){
     if ($("span").hasClass("thumbnail")) {
         $(".videoList").empty()
         $(".videoList").append(htmlString)
-       browserType.extension.getBackgroundPage().console.log("clean up and append")
     } else {
         $(".videoList").append(htmlString)
-       browserType.extension.getBackgroundPage().console.log("directly append")
     }
 }
 
@@ -102,9 +94,7 @@ $(document).ready(function () {
         browserType.extension.getBackgroundPage().console.log("click update")
         browserType.extension.getBackgroundPage().console.log($(".videoList").attr("status"));
         if($(".videoList").attr("status") == "updated"){
-
             $(".videoList").attr("status","updating");
-
             if ($("span").hasClass("thumbnail")) {
                 $(".videoList").empty()
             }
@@ -118,8 +108,6 @@ $(document).ready(function () {
     })
     handleReload()
     browserType.runtime.onMessage.addListener((ms) => {
-        //browserType.extension.getBackgroundPage().console.log(ms)
-        
         if (ms.debugOutput !== undefined) {
             output(debugHtmlSnippet(ms.debugOutput))
         } else if (ms.updateComplete !== undefined) {
