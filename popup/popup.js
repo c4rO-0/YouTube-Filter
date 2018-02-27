@@ -40,7 +40,7 @@ function htmlSnippet(videoInfo) {
                 </span>\
                 <a href="https://www.youtube.com' + videoInfo.videoUrl + '" target=\'_newtab\'>\
                     <h3>\
-                        <span class="video-title">' + videoInfo.title + '</span>\
+                        <span title="' + videoInfo.title + ' " class="video-title">' + videoInfo.title + '</span>\
                     </h3>\
                     <div class="metadata">\
                         <div class="byline">' + videoInfo.channelName + '</div>\
