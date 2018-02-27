@@ -506,6 +506,7 @@ function getFeedPlayList() {
 }
 
 function handleImportPlaylist() {
+    $("#ImportPlaylist").off("click", handleImportPlaylist)    
     $("#dialog").dialog("open")
     getFeedPlayList().then((list) => {
         $("svg").css("display", "none")
@@ -530,6 +531,7 @@ function handleImportPlaylist() {
 }
 
 function handleDialogOK() {
+    $("#ImportPlaylist").on("click", handleImportPlaylist)
     let newList = new Array()
     let countOnOff
     let isPlaylist = true
@@ -683,6 +685,7 @@ $(document).ready(function () {
     //setting for function buttons
     $("#ImportPlaylist").on("click", handleImportPlaylist)
     $("button.ui-button.ui-corner-all.ui-widget.ui-button-icon-only.ui-dialog-titlebar-close").on("click", () => {
+        $("#ImportPlaylist").on("click", handleImportPlaylist)
         $(".ulDialog").empty()
         $("svg").css("display", "inline")
     })
