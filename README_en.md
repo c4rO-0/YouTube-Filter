@@ -38,9 +38,13 @@ this add-on is developed in javascript, includes 5 parts
 
 ## version updated
 
-### a1.1.0 
-- change frame to fit Chrome
+### a.1.1.2
+* revise width of popup window content
+* add title to popup window content
 
 ### a1.1.1
 - add multi-language 
 - use ZH as default language
+
+### a1.1.0 
+- change frame to fit Chrome
