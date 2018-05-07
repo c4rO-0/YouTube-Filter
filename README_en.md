@@ -4,6 +4,9 @@
 
 Youtube Filter could help you to keep updated about your concerened videos on Youtube, by specific keywords you provided.
 
+- [get firefox add-on](https://addons.mozilla.org/zh-CN/firefox/addon/youtube-filter-c4r/)
+- [get chrome add-on](https://chrome.google.com/webstore/detail/youtube-filter%E8%BF%BD%E5%89%A7%E7%A5%9E%E5%99%A8/hocfflahacbjoffoonnglbfamlckaeaj?hl=en)
+
 adding keywords
 
 ![](https://media.giphy.com/media/3ohs4dmQK9B9GCnNFC/giphy.gif)
